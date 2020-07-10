@@ -1,6 +1,7 @@
 import pygame
 import spritesheet
 from pygame import mixer
+from sprites import *
 
 # initialize pygame
 pygame.init()
@@ -11,8 +12,12 @@ clock = pygame.time.Clock()
 # create screen
 screen = pygame.display.set_mode((256, 128))
 
+tileX = 32
+tileY = 16
+
 black = (0, 0, 0)
 white = (255, 255, 255)
+green = (3, 87, 43)
 
 # Player Image
 sl = spritesheet.spritesheet('sprites/ShopLeft.png')
@@ -52,46 +57,15 @@ sb4 = sb.image_at((40, 0, 19, 30))
 
 walk_back = [sb1, sb2, sb3, sb4]
 
+
 menu = spritesheet.spritesheet("sprites/menu.png")
 menu_up = menu.image_at((0, 0, 70, 100))
 
 # get player image from spritesheet and place on map
 playerImg = walk_front[0]
-playerX = 96/32
-playerY = 64/16
+playerX = 96/tileX
+playerY = 64/tileY
 facing = "down"
-
-# allow for player location change
-playerX_change = 0
-playerY_change = 0
-
-
-# Draw item on screen
-class Item(object):
-    def __init__(self, rectangle, filename, x, y, inv):
-        self.sheet = pygame.image.load(filename).convert_alpha()
-        self.rectangle = rectangle
-        self.X = x
-        self.Y = y
-        self.inv = inv
-
-    def draw(self):
-        # "Loads image from x,y,x+offset,y+offset"
-        rect = pygame.Rect(self.rectangle)
-        image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0, 0), rect)
-        colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey, pygame.RLEACCEL)
-        screen.blit(image, (self.X*32, self.Y*16+8))
-        return image
-
-
-# define items
-red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False)
-yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False)
-blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False)
-green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False)
-knife = 0
 
 
 # write words on the screen
@@ -110,7 +84,7 @@ class Phrase(object):
         text = screen.blit(label, (self.X, self.Y))
         return text
 
-
+# phrases for bottom left of screen
 P1 = Phrase("The chest opened!", False, 10, 116, white, 10)
 P2 = Phrase("Hello world", False, 10, 116, white, 10)
 P3 = Phrase("You found a red key!", False, 10, 116, white, 10)
@@ -120,7 +94,7 @@ P6 = Phrase("You found a yellow key!", False, 10, 116, white, 10)
 P7 = Phrase("The cardboard box opened!", False, 10, 116, white, 10)
 P8 = Phrase("You played a record!", False, 10, 116, white, 10)
 P9 = Phrase("You stopped the record!", False, 10, 116, white, 10)
-P10 = Phrase("you have no items!", False, 10, 116, white, 10)
+P10 = Phrase("You have no items!", False, 10, 116, white, 10)
 P11 = Phrase("Your phone is not charged!", False, 10, 116, white, 10)
 P12 = Phrase("You're already dressed!", False, 10, 116, white, 10)
 P13 = Phrase("Figure it out!", False, 10, 116, white, 10)
@@ -130,24 +104,58 @@ phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13]
 # design the menu
 menuX = 10
 menuY = 10
-menu_go = False
+
 M1 = Phrase("items", False, menuX + 6, menuY + 15, black, 8)
 M2 = Phrase("phone", False, menuX + 6, menuY + 35, black, 8)
 M3 = Phrase("outfit", False, menuX + 6, menuY + 55, black, 8)
-M4 = Phrase("guide", False, menuX + 6, menuY + 75, black, 8)
+M4 = Phrase("scraps", False, menuX + 6, menuY + 75, black, 8)
+
+menu_items = [M1, M2, M3, M4]
+
+# phrases for selector
 select = Phrase("-", False, menuX + 55, M1.Y, black, 8)
-menu_items = [M1, M2, M3, M4, select]
 
 
-# add props
-class Prop(object):
-    def __init__(self, rectangle, filename, x, y, move, key):
+# phrases for inventory
+I1 = Phrase("r. key", False, menuX + 6, menuY + 15, black, 8)
+I2 = Phrase("y. key", False, menuX + 6, menuY + 35, black, 8)
+I3 = Phrase("b. key", False, menuX + 6, menuY + 55, black, 8)
+I4 = Phrase("g. key", False, menuX + 6, menuY + 75, black, 8)
+
+inventory = [I1, I2, I3, I4]
+
+# phrases for scraps
+S1 = Phrase("The rats are dancing to jazz", False, menuX + 6, menuY + 15, black, 8)
+S2 = Phrase("My knees are getting old", False, menuX + 6, menuY + 15, black, 8)
+S3 = Phrase("Bees are friendly", False, menuX + 6, menuY + 15, black, 8)
+S4 = Phrase("I'm not sure where Hue is", False, menuX + 6, menuY + 15, black, 8)
+
+rambling = [S1, S2, S3, S4]
+total_scraps = (4-1)
+
+T1a = Phrase("Hi sweetie, hope things", False, menuX + 16, menuY + 35, green, 8)
+T2a = Phrase("Did you find anything cool?", False, menuX + 16, menuY + 35, green, 8)
+T3a = Phrase("message me if you need", False, menuX + 16, menuY + 35, green, 8)
+
+T1b = Phrase("are going okay.", False, menuX + 16, menuY + 55, green, 8)
+T2b = Phrase(" ", False, menuX + 16, menuY + 55, green, 8)
+T3b = Phrase("any help with anything!", False, menuX + 16, menuY + 55, green, 8)
+
+texts = [T1a, T2a, T3a]
+textsb = [T1b, T2b, T3b]
+total_texts = (3-1)
+
+# define items
+# Draw item on screen
+class Item(object):
+    def __init__(self, rectangle, filename, x, y, inv, phrase):
         self.sheet = pygame.image.load(filename).convert_alpha()
         self.rectangle = rectangle
         self.X = x
         self.Y = y
-        self.move = move
-        self.key = key
+        self.inv = inv
+        self.phrase = phrase
+
 
     def draw(self):
         # "Loads image from x,y,x+offset,y+offset"
@@ -156,7 +164,41 @@ class Prop(object):
         image.blit(self.sheet, (0, 0), rect)
         colorkey = image.get_at((0, 0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
-        screen.blit(image, (self.X*32, self.Y*16+8))
+        screen.blit(image, (self.X*tileX, self.Y*tileY+(tileY/2)))
+        return image
+
+
+# list of items to appear in inventory
+red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I1)
+yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I2)
+blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I3)
+green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I4)
+knife = 0
+
+items = [red_key, yellow_key, blue_key, green_key]
+
+current_inv = []
+
+
+# define props
+class Prop(object):
+    def __init__(self, rectangle, filename, x, y, move, key, on):
+        self.sheet = pygame.image.load(filename).convert_alpha()
+        self.rectangle = rectangle
+        self.X = x
+        self.Y = y
+        self.move = move
+        self.key = key
+        self.on = on
+
+    def draw(self):
+        # "Loads image from x,y,x+offset,y+offset"
+        rect = pygame.Rect(self.rectangle)
+        image = pygame.Surface(rect.size).convert()
+        image.blit(self.sheet, (0, 0), rect)
+        colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey, pygame.RLEACCEL)
+        screen.blit(image, (self.X*tileX, self.Y*tileY+(tileY/2)))
         return image
 
 
@@ -168,17 +210,22 @@ def propat(x, y):
     return False
 
 
-# define props
-blue_chest = Prop((0, 0, 32, 25), 'sprites/props.png', 2, 2, True, 0)
-yellow_chest = Prop((32, 0, 32, 25), 'sprites/props.png', 4, 0, True, 0)
-green_chest = Prop((64, 0, 32, 25), 'sprites/props.png', 5, 4, True, 0)
-red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 1, 4, True, 0)
-ladder = Prop((128, 25, 31, 25), 'sprites/props.png', 2, 5, False, 0)
-box1 = Prop((0, 25, 31, 24), 'sprites/props.png', 6, 5, True, 3)
-box2 = Prop((96, 25, 31, 24), 'sprites/props.png', 3, 5, True, 0)
-box3 = Prop((32, 25, 31, 24), 'sprites/props.png', 3, 3, True, 3)
-box4 = Prop((64, 25, 31, 24), 'sprites/props.png', 5, 2, True, 3)
-phono = Prop((128, 0, 31, 25), 'sprites/props.png', 1, 0, False, 4)
+# list of props that appear in the room
+blue_chest = Prop((0, 0, 32, 25), 'sprites/props.png', 2, 2, True, 0, True)
+yellow_chest = Prop((32, 0, 32, 25), 'sprites/props.png', 4, 0, True, 0, True)
+green_chest = Prop((64, 0, 32, 25), 'sprites/props.png', 5, 4, True, 0, True)
+red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 1, 4, True, 0, True)
+ladder = Prop((128, 25, 31, 25), 'sprites/props.png', 2, 5, False, 0, True)
+box1 = Prop((0, 25, 31, 24), 'sprites/props.png', 6, 5, True, 3, True)
+box2 = Prop((96, 25, 31, 24), 'sprites/props.png', 3, 5, True, 0, True)
+box3 = Prop((32, 25, 31, 24), 'sprites/props.png', 3, 3, True, 3, True)
+box4 = Prop((64, 25, 31, 24), 'sprites/props.png', 5, 2, True, 3, True)
+phono = Prop((128, 0, 31, 25), 'sprites/props.png', 1, 0, False, 4, True)
+
+# list of images to be displayed that are not props
+scrap = Prop((0, 0, 256, 128), "sprites/scrap.png", 0, -0.5, False, 0, False)
+
+phone_bg = Prop((0, 0, 256, 128), "sprites/phone.png", 0, -0.5, False, 0, False)
 
 # self.key code:
 # 0: no key found for chest
@@ -190,6 +237,7 @@ phono = Prop((128, 0, 31, 25), 'sprites/props.png', 1, 0, False, 4)
 props = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono]
 
 
+# define record
 class Record(object):
     def __init__(self, audio):
         self.audio = audio
@@ -201,6 +249,7 @@ class Record(object):
         return musico
 
 
+# list of available records
 record1 = Record("audio/record1.mp3")
 record2 = Record("audio/record2.mp3")
 
@@ -218,19 +267,33 @@ def player(x, y):
 
 # initialization of variables
 in_room = True
-
-
 red_keyX = False
 blue_keyX = False
 green_keyX = False
 yellow_keyX = False
 record = "off"
-
+menu_go = False
+in_menu = False
+in_inv = False
+in_scrap = False
+in_phone = False
+list_select = 0
+select4 = 0
 
 def clear():
     for c in phrases:
         c.on = False
 
+
+def clear_scrap():
+    for s in rambling:
+        s.on = False
+
+def clear_texts():
+    for t in texts:
+        t.on = False
+    for t in textsb:
+        t.on = False
 
 music_start = 1
 
@@ -271,7 +334,7 @@ def big_draw():
             if p.Y == 6:
                 p.draw()
 
-    player(playerX * 32, playerY * 16)
+    player(playerX * tileX, playerY * tileY)
 
     for p in props:
         if p.Y > playerY:
@@ -308,6 +371,13 @@ def big_draw():
 
     if red_keyX == True:
         red_key.draw()
+
+    if scrap.on == True:
+        scrap.draw()
+
+    if phone_bg.on == True:
+        phone_bg.draw()
+
 
 while running:
 
@@ -458,6 +528,9 @@ while running:
 
             if event.key == pygame.K_LCTRL and menu_go == False:
                 menu_go = True
+                for m in menu_items:
+                    m.on = True
+                in_menu = True
 
             # Find Keys
             if event.key == pygame.K_0:
@@ -465,24 +538,32 @@ while running:
                 red_chest.key = 1
                 print("You found a red key!")
                 P3.on = True
+                red_key.inv = True
+                current_inv.append(red_key)
 
             if event.key == pygame.K_1:
                 blue_keyX = True
                 blue_chest.key = 1
                 print("You found a blue key")
                 P4.on = True
+                blue_key.inv = True
+                current_inv.append(blue_key)
 
             if event.key == pygame.K_2:
                 green_keyX = True
                 green_chest.key = 1
                 print("You found a green key!")
                 P5.on = True
+                green_key.inv = True
+                current_inv.append(green_key)
 
             if event.key == pygame.K_3:
                 yellow_keyX = True
                 yellow_chest.key = 1
                 print("You found a yellow key!")
                 P6.on = True
+                yellow_key.inv = True
+                current_inv.append(yellow_key)
 
         # Release Keys
         if event.type == pygame.KEYUP:
@@ -494,9 +575,6 @@ while running:
         in_room = False
     if playerX == 1 and playerY == 4:
         in_room = True
-
-    playerX += playerX_change
-    playerY += playerY_change
 
     big_draw()
 
@@ -514,6 +592,8 @@ while running:
     if play_music == False:
         mixer.music.pause()
 
+    print(current_inv)
+
     while menu_go == True:
         for event in pygame.event.get():
 
@@ -522,7 +602,15 @@ while running:
                 print(P10.on)
 
                 if event.key == pygame.K_EQUALS:
+                    scrap.on = False
+                    in_menu = False
+                    in_inv = False
+                    in_scrap = False
                     menu_go = False
+                    phone_bg.on = False
+                    in_phone = False
+                    for m in menu_items:
+                        m.on = False
 
                 if event.key == pygame.K_DOWN and select.Y == M1.Y:
                     select.Y = M2.Y
@@ -542,30 +630,107 @@ while running:
                 elif event.key == pygame.K_UP and select.Y == M4.Y:
                     select.Y = M3.Y
 
-                if event.key == pygame.K_RETURN and select.Y == M1.Y:
-                    print("you have no items!")
-                    P10.on = True
-                    print(P10.on)
+                if in_menu == True:
+                    if event.key == pygame.K_RETURN and select.Y == M1.Y:
+                        print("you have no items!")
+                        P10.on = True
+                        for m in inventory:
+                            m.on = True
+                        for m in menu_items:
+                            m.on = False
+                        in_menu = False
+                        in_inv = True
 
-                elif event.key == pygame.K_RETURN and select.Y == M2.Y:
-                    print("Phone is out of batteries!")
-                    P11.on = True
-                    print(P10.on)
+                    elif event.key == pygame.K_RETURN and select.Y == M2.Y:
+                        in_phone = True
+                        phone_bg.on = True
+                        for m in menu_items:
+                            m.on = False
+                        in_menu = False
+                        T1a.on = True
+                        T1b.on = True
 
-                elif event.key == pygame.K_RETURN and select.Y == M3.Y:
-                    print("You're already wearing clothes!")
-                    P12.on = True
-                    print(P10.on)
+                    elif event.key == pygame.K_RETURN and select.Y == M3.Y:
+                        print("You're already wearing clothes!")
+                        P12.on = True
 
-                elif event.key == pygame.K_RETURN and select.Y == M4.Y:
-                    print("Figure it out?!")
-                    P13.on = True
-                    print(P10.on)
+                    elif event.key == pygame.K_RETURN and select.Y == M4.Y:
+                        scrap.on = True
+                        for m in menu_items:
+                            m.on = False
+                        in_menu = False
+                        in_scrap = True
+                        S1.on = True
+
+                if in_scrap == True:
+                    if event.key == pygame.K_DOWN:
+                        in_scrap = False
+                        scrap.on = False
+                        in_menu = True
+                        list_select = 0
+                        for m in menu_items:
+                            m.on = True
+                        clear_scrap()
+
+                    if event.key == pygame.K_RIGHT and list_select < total_scraps:
+                        clear_scrap()
+                        list_select += 1
+                        (rambling[list_select]).on = True
+
+                    if event.key == pygame.K_LEFT and list_select > 0:
+                        clear_scrap()
+                        list_select -= 1
+                        (rambling[list_select]).on = True
+
+                if in_phone == True:
+                    if event.key == pygame.K_DOWN:
+                        in_phone = False
+                        phone_bg.on = False
+                        in_menu = True
+                        list_select = 0
+                        for m in menu_items:
+                            m.on = True
+                        clear_texts()
+
+                    if event.key == pygame.K_RIGHT and list_select < total_texts:
+                        clear_texts()
+                        list_select += 1
+                        (texts[list_select]).on = True
+                        (textsb[list_select]).on = True
+
+                    if event.key == pygame.K_LEFT and list_select > 0:
+                        clear_texts()
+                        list_select -= 1
+                        (texts[list_select]).on = True
+                        (textsb[list_select]).on = True
+
+        select.write()
 
         big_draw()
-        screen.blit(menu_up, (menuX, menuY))
+        if in_menu == True or in_inv == True:
+            screen.blit(menu_up, (menuX, menuY))
+            select.write()
+
         for m in menu_items:
-            m.write()
+            if m.on == True:
+                    m.write()
+
+        if in_inv == True:
+            for m in current_inv:
+                m.phrase.write()
+                print(m.phrase)
+
+        if in_scrap == True:
+            for r in rambling:
+                if r.on == True:
+                    r.write()
+        if in_phone == True:
+            for r in texts:
+                if r.on == True:
+                    r.write()
+            for r in textsb:
+                if r.on == True:
+                    r.write()
 
         pygame.display.update()
         clock.tick(5)

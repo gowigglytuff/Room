@@ -1,21 +1,18 @@
 import pygame
-import room
+import spirtesheet
 
-all_sprites = pygame.sprites.Group()
+sl = spritesheet.spritesheet('sprites/ShopLeft.png')
+sr = spritesheet.spritesheet('sprites/ShopRight.png')
+sf = spritesheet.spritesheet('sprites/ShopFront.png')
+sb = spritesheet.spritesheet('sprites/ShopBack.png')
 
-
-class Player(pygame.sprite.Sprite):
-    def __init__(self, filename):
-        pygame.sprite.Sprite.__init__(self)
-        self.sheet = pygame.image.load(filename).convert_alpha()
-
-        # Load a specific image from a specific rectangle
-
-        def image_at(self, rectangle):
-            # "Loads image from x,y,x+offset,y+offset"
-            rect = pygame.Rect(rectangle)
-            image = pygame.Surface(rect.size).convert()
-            image.blit(self.sheet, (0, 0), rect)
-            colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
-            return image
+class Player():
+    def __init__(self, facing, x, y, image):
+        self.facing = facing
+        self.X = x
+        self.Y = y
+        self.load_images()
+        self.image = image
+        self.current_frame = 0
+        self.last_update = 0
+        self.rect
