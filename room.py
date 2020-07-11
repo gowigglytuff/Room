@@ -480,10 +480,9 @@ while running:
             # open chests and cardboard boxes
             for target in props:
                 if event.key == pygame.K_RETURN:
-                    if facing == "up" and target.X == playerX and target.Y == playerY-1 and target.key == 1:
-                        print("the chest opened!")
-                        P1.on = True
-                        target.key = 2
+                    if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 2:
+                        print("you looked inside")
+
 
                     if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
                     and record == "off":
@@ -737,7 +736,7 @@ while running:
                         select.on = False
                         subselect.on = False
                         in_submenu = False
-
+# in scraps
                 if in_scrap == True:
                     if event.key == pygame.K_DOWN:
                         in_scrap = False
@@ -757,7 +756,7 @@ while running:
                         clear_scrap()
                         list_select -= 1
                         (rambling[list_select]).on = True
-
+# in phone
                 if in_phone == True:
                     if event.key == pygame.K_DOWN:
                         in_phone = False
@@ -779,7 +778,7 @@ while running:
                         list_select -= 1
                         (texts[list_select]).on = True
                         (textsb[list_select]).on = True
-
+# in inventory
                 if in_inv == True:
                     menu_number = 4
 
@@ -877,7 +876,7 @@ while running:
                                     in_inv = False
                                     pause = False
                                     subselect.on = True
-
+# in submenu
                 if in_submenu == True:
                     if event.key == pygame.K_DOWN:
                         if subselect.Y == SM1.Y:
@@ -899,10 +898,38 @@ while running:
                             in_submenu = False
                             select.on = True
                             subselect.on = False
+# submenu "tap" button
                         if subselect.Y == SM2.Y:
-                            print("you inspected the item!")
+                            if inv_page == 1:
+                                if select.Y == MIY1:
+                                    print("I wonder if the colour means anything...")
+
+# submenu "use" button
                         if subselect.Y == SM1.Y:
-                            print("you can't use that now!")
+                            if inv_page == 1:
+                                if select.Y == MIY1:
+                                    if facing == "up" and red_chest.X == playerX and red_chest.Y == playerY - 1:
+                                        print("the chest opened!")
+                                        P1.on = True
+                                        red_chest.key = 2
+
+                                elif select.Y == MIY2:
+                                    if facing == "up" and yellow_chest.X == playerX and yellow_chest.Y == playerY - 1:
+                                        P1.on = True
+                                        yellow_chest.key = 2
+                                        print("the chest opened!")
+
+                                elif select.Y == MIY3:
+                                    if facing == "up" and blue_chest.X == playerX and blue_chest.Y == playerY - 1:
+                                        P1.on = True
+                                        blue_chest.key = 2
+                                        print("the chest opened!")
+
+                                elif select.Y == MIY4:
+                                    if facing == "up" and green_chest.X == playerX and green_chest.Y == playerY - 1:
+                                        P1.on = True
+                                        green_chest.key = 2
+                                        print("the chest opened!")
 
         pause = True
         big_draw()
@@ -934,7 +961,6 @@ while running:
                     m.phrase.write()
             if I0.on == True:
                 I0.write()
-
 
         if in_scrap == True:
             for r in rambling:
