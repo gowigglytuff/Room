@@ -57,6 +57,23 @@ sb4 = sb.image_at((40, 0, 19, 30))
 
 walk_back = [sb1, sb2, sb3, sb4]
 
+# design the menu
+menuX = 10
+menuY = 10
+
+# Menu spacing
+MIX = menuX + 6
+menu_size = (100-20)
+menu_number = 5
+spacing = menu_size/menu_number
+menu_start = menuY + 15
+menu_end = menuY +75
+
+MIY1 = menu_start
+MIY2 = menu_start + spacing
+MIY3 = menu_start + (spacing*2)
+MIY4 = menu_start + (spacing*3)
+MIY5 = menu_start + (spacing*4)
 
 menu = spritesheet.spritesheet("sprites/menu.png")
 menu_up = menu.image_at((0, 0, 70, 100))
@@ -101,28 +118,36 @@ P13 = Phrase("Figure it out!", False, 10, 116, white, 10)
 
 phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13]
 
-# design the menu
-menuX = 10
-menuY = 10
 
-M1 = Phrase("items", False, menuX + 6, menuY + 15, black, 8)
-M2 = Phrase("phone", False, menuX + 6, menuY + 35, black, 8)
-M3 = Phrase("outfit", False, menuX + 6, menuY + 55, black, 8)
-M4 = Phrase("scraps", False, menuX + 6, menuY + 75, black, 8)
 
-menu_items = [M1, M2, M3, M4]
+M1 = Phrase("items", False, MIX, MIY1, black, 8)
+M2 = Phrase("phone", False, MIX, MIY2, black, 8)
+M3 = Phrase("outfit", False, MIX, MIY3, black, 8)
+M4 = Phrase("scraps", False, MIX, MIY4, black, 8)
+M5 = Phrase("esc", False, MIX, MIY5, black, 8)
+
+menu_items = [M1, M2, M3, M4, M5]
 
 # phrases for selector
-select = Phrase("-", False, menuX + 55, M1.Y, black, 8)
+select = Phrase("-", False, menuX + 55, MIY1, black, 8)
 
 
 # phrases for inventory
-I1 = Phrase("r. key", False, menuX + 6, menuY + 15, black, 8)
-I2 = Phrase("y. key", False, menuX + 6, menuY + 35, black, 8)
-I3 = Phrase("b. key", False, menuX + 6, menuY + 55, black, 8)
-I4 = Phrase("g. key", False, menuX + 6, menuY + 75, black, 8)
+I0 = Phrase("esc", False, MIX, MIY5, black, 8)
+I1 = Phrase("r. key", False, MIX, MIY1, black, 8)
+I2 = Phrase("y. key", False, MIX, MIY2, black, 8)
+I3 = Phrase("b. key", False, MIX, MIY3, black, 8)
+I4 = Phrase("g. key", False, MIX, MIY4, black, 8)
+I5 = Phrase("knife", False, MIX, MIY1, black, 8)
+I6 = Phrase("dolly", False, MIX, MIY3, black, 8)
+I7 = Phrase("part 1", False, MIX, MIY1, black, 8)
+I8 = Phrase("part 2", False, MIX, MIY2, black, 8)
+I9 = Phrase("part 3", False, MIX, MIY3, black, 8)
+I10 = Phrase("kettle", False, MIX, MIY4, black, 8)
+I11 = Phrase("trinket", False, MIX, MIY4, black, 8)
+I12 = Phrase("trinket", False, MIX, MIY2, black, 8)
 
-inventory = [I1, I2, I3, I4]
+inventory = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
 
 # phrases for scraps
 S1 = Phrase("The rats are dancing to jazz", False, menuX + 6, menuY + 15, black, 8)
@@ -145,16 +170,23 @@ texts = [T1a, T2a, T3a]
 textsb = [T1b, T2b, T3b]
 total_texts = (3-1)
 
+SM1 = Phrase("use", False, menuX + 76, menuY + 10, black, 8)
+SM2 = Phrase("tap", False, menuX + 76, menuY + 22, black, 7)
+SM3 = Phrase("esc", False, menuX + 76, menuY + 34, black, 8)
+
+subpicks = [SM1, SM2, SM3]
+
 # define items
 # Draw item on screen
 class Item(object):
-    def __init__(self, rectangle, filename, x, y, inv, phrase):
+    def __init__(self, rectangle, filename, x, y, inv, phrase, page):
         self.sheet = pygame.image.load(filename).convert_alpha()
         self.rectangle = rectangle
         self.X = x
         self.Y = y
         self.inv = inv
         self.phrase = phrase
+        self.page = page
 
 
     def draw(self):
@@ -169,15 +201,22 @@ class Item(object):
 
 
 # list of items to appear in inventory
-red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I1)
-yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I2)
-blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I3)
-green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I4)
-knife = 0
+red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I1, 1)
+yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I2, 1)
+blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I3, 1)
+green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I4, 1)
+knife = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I5, 2)
+dolly = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I6, 2)
+machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I7, 3)
+machine2 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I8, 3)
+machine3 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I9, 3)
+kettle = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I10, 3)
+trinket = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I11, 2)
+bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I112, 2)
 
-items = [red_key, yellow_key, blue_key, green_key]
+items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, machine2, machine3, kettle, trinket, bobble]
 
-current_inv = []
+current_inv = [knife, dolly, machine1, machine2, machine3, kettle, trinket, bobble]
 
 
 # define props
@@ -226,6 +265,8 @@ phono = Prop((128, 0, 31, 25), 'sprites/props.png', 1, 0, False, 4, True)
 scrap = Prop((0, 0, 256, 128), "sprites/scrap.png", 0, -0.5, False, 0, False)
 
 phone_bg = Prop((0, 0, 256, 128), "sprites/phone.png", 0, -0.5, False, 0, False)
+
+submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, False)
 
 # self.key code:
 # 0: no key found for chest
@@ -279,6 +320,8 @@ in_scrap = False
 in_phone = False
 list_select = 0
 select4 = 0
+in_submenu = False
+inv_page = 1
 
 def clear():
     for c in phrases:
@@ -294,6 +337,7 @@ def clear_texts():
         t.on = False
     for t in textsb:
         t.on = False
+
 
 music_start = 1
 
@@ -592,8 +636,6 @@ while running:
     if play_music == False:
         mixer.music.pause()
 
-    print(current_inv)
-
     while menu_go == True:
         for event in pygame.event.get():
 
@@ -612,35 +654,45 @@ while running:
                     for m in menu_items:
                         m.on = False
 
-                if event.key == pygame.K_DOWN and select.Y == M1.Y:
-                    select.Y = M2.Y
-                elif event.key == pygame.K_DOWN and select.Y == M2.Y:
-                    select.Y = M3.Y
-                elif event.key == pygame.K_DOWN and select.Y == M3.Y:
-                    select.Y = M4.Y
-                elif event.key == pygame.K_DOWN and select.Y == M4.Y:
-                    select.Y = M1.Y
-
-                if event.key == pygame.K_UP and select.Y == M1.Y:
-                    select.Y = M4.Y
-                elif event.key == pygame.K_UP and select.Y == M2.Y:
-                    select.Y = M1.Y
-                elif event.key == pygame.K_UP and select.Y == M3.Y:
-                    select.Y = M2.Y
-                elif event.key == pygame.K_UP and select.Y == M4.Y:
-                    select.Y = M3.Y
-
                 if in_menu == True:
+                    menu_number = 5
+
+                    if event.key == pygame.K_DOWN and select.Y == M1.Y:
+                        select.Y = M2.Y
+                    elif event.key == pygame.K_DOWN and select.Y == M2.Y:
+                        select.Y = M3.Y
+                    elif event.key == pygame.K_DOWN and select.Y == M3.Y:
+                        select.Y = M4.Y
+                    elif event.key == pygame.K_DOWN and select.Y == M4.Y:
+                        select.Y = M5.Y
+                    elif event.key == pygame.K_DOWN and select.Y == M5.Y:
+                        select.Y = M1.Y
+
+                    if event.key == pygame.K_UP and select.Y == M1.Y:
+                        select.Y = M5.Y
+                    elif event.key == pygame.K_UP and select.Y == M2.Y:
+                        select.Y = M1.Y
+                    elif event.key == pygame.K_UP and select.Y == M3.Y:
+                        select.Y = M2.Y
+                    elif event.key == pygame.K_UP and select.Y == M4.Y:
+                        select.Y = M3.Y
+                    elif event.key == pygame.K_UP and select.Y == M5.Y:
+                        select.Y = M4.Y
+
+                    # inventory
                     if event.key == pygame.K_RETURN and select.Y == M1.Y:
                         print("you have no items!")
                         P10.on = True
-                        for m in inventory:
-                            m.on = True
+                        for m in current_inv:
+                            if m.page == 1:
+                                m.phrase.on = True
                         for m in menu_items:
                             m.on = False
                         in_menu = False
                         in_inv = True
+                        I0.on = True
 
+                    # phone
                     elif event.key == pygame.K_RETURN and select.Y == M2.Y:
                         in_phone = True
                         phone_bg.on = True
@@ -650,10 +702,12 @@ while running:
                         T1a.on = True
                         T1b.on = True
 
+                    # outfit
                     elif event.key == pygame.K_RETURN and select.Y == M3.Y:
                         print("You're already wearing clothes!")
                         P12.on = True
 
+                    # scraps
                     elif event.key == pygame.K_RETURN and select.Y == M4.Y:
                         scrap.on = True
                         for m in menu_items:
@@ -661,6 +715,18 @@ while running:
                         in_menu = False
                         in_scrap = True
                         S1.on = True
+
+                    # escape
+                    elif event.key == pygame.K_RETURN and select.Y == M5.Y:
+                        scrap.on = False
+                        in_menu = False
+                        in_inv = False
+                        in_scrap = False
+                        menu_go = False
+                        phone_bg.on = False
+                        in_phone = False
+                        for m in menu_items:
+                            m.on = False
 
                 if in_scrap == True:
                     if event.key == pygame.K_DOWN:
@@ -704,12 +770,113 @@ while running:
                         (texts[list_select]).on = True
                         (textsb[list_select]).on = True
 
+                if in_inv == True:
+                    menu_number = 4
+
+                    if event.key == pygame.K_DOWN:
+                        if select.Y == MIY1:
+                            select.Y = M2.Y
+                        elif select.Y == MIY2:
+                            select.Y = M3.Y
+                        elif select.Y == MIY3:
+                            select.Y = M4.Y
+                        elif select.Y == MIY4:
+                            select.Y = M5.Y
+                        elif select.Y == MIY5:
+                            select.Y = M1.Y
+
+                    if event.key == pygame.K_UP:
+                        if select.Y == M1.Y:
+                            select.Y = M5.Y
+                        elif select.Y == M2.Y:
+                            select.Y = M1.Y
+                        elif select.Y == M3.Y:
+                            select.Y = M2.Y
+                        elif select.Y == M4.Y:
+                            select.Y = M3.Y
+                        elif select.Y == M5.Y:
+                            select.Y = M4.Y
+
+                    if event.key == pygame.K_RIGHT:
+                        if inv_page == 1:
+                            inv_page = 2
+                            for m in current_inv:
+                                if m.page == 1:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 2:
+                                    m.phrase.on = True
+                        elif inv_page == 2:
+                            inv_page = 3
+                            for m in current_inv:
+                                if m.page == 2:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 3:
+                                    m.phrase.on = True
+                        elif inv_page == 3:
+                            inv_page = 1
+                            for m in current_inv:
+                                if m.page == 3:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 1:
+                                    m.phrase.on = True
+
+                    if event.key == pygame.K_LEFT:
+                        if inv_page == 1:
+                            inv_page = 3
+                            for m in current_inv:
+                                if m.page == 1:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 3:
+                                    m.phrase.on = True
+                        elif inv_page == 2:
+                            inv_page = 1
+                            for m in current_inv:
+                                if m.page == 2:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 1:
+                                    m.phrase.on = True
+                        elif inv_page == 3:
+                            inv_page = 2
+                            for m in current_inv:
+                                if m.page == 3:
+                                    m.phrase.on = False
+                            for m in current_inv:
+                                if m.page == 2:
+                                    m.phrase.on = True
+
+                    if event.key == pygame.K_RETURN:
+                        if select.Y == MIY5:
+                            in_inv = False
+                            in_menu = True
+                            for m in menu_items:
+                                m.on = True
+                            clear_texts()
+                            for m in current_inv:
+                                m.phrase.on = False
+                            I0.on = False
+
+
+        print(I1.on)
         select.write()
 
+
         big_draw()
+
+        submenu.draw()
         if in_menu == True or in_inv == True:
             screen.blit(menu_up, (menuX, menuY))
             select.write()
+            in_submenu = True
+
+        if in_submenu == True:
+            submenu.draw()
+            for s in subpicks:
+                s.write()
 
         for m in menu_items:
             if m.on == True:
@@ -717,8 +884,10 @@ while running:
 
         if in_inv == True:
             for m in current_inv:
-                m.phrase.write()
-                print(m.phrase)
+                if m.phrase.on == True:
+                    m.phrase.write()
+            if I0.on == True:
+                I0.write()
 
         if in_scrap == True:
             for r in rambling:
