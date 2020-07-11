@@ -131,7 +131,6 @@ menu_items = [M1, M2, M3, M4, M5]
 # phrases for selector
 select = Phrase("-", False, menuX + 55, MIY1, black, 8)
 
-
 # phrases for inventory
 I0 = Phrase("esc", False, MIX, MIY5, black, 8)
 I1 = Phrase("r. key", False, MIX, MIY1, black, 8)
@@ -144,8 +143,8 @@ I7 = Phrase("part 1", False, MIX, MIY1, black, 8)
 I8 = Phrase("part 2", False, MIX, MIY2, black, 8)
 I9 = Phrase("part 3", False, MIX, MIY3, black, 8)
 I10 = Phrase("kettle", False, MIX, MIY4, black, 8)
-I11 = Phrase("trinket", False, MIX, MIY4, black, 8)
-I12 = Phrase("trinket", False, MIX, MIY2, black, 8)
+I11 = Phrase("toy", False, MIX, MIY4, black, 8)
+I12 = Phrase("bobble", False, MIX, MIY2, black, 8)
 
 inventory = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
 
@@ -175,6 +174,8 @@ SM2 = Phrase("tap", False, menuX + 76, menuY + 22, black, 7)
 SM3 = Phrase("esc", False, menuX + 76, menuY + 34, black, 8)
 
 subpicks = [SM1, SM2, SM3]
+
+subselect = Phrase("-", False, SM1.X + 25, SM1.Y, black, 8)
 
 # define items
 # Draw item on screen
@@ -211,12 +212,12 @@ machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I7, 3)
 machine2 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I8, 3)
 machine3 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I9, 3)
 kettle = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I10, 3)
-trinket = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I11, 2)
-bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I112, 2)
+toy = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I11, 2)
+bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I12, 2)
 
-items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, machine2, machine3, kettle, trinket, bobble]
+items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, machine2, machine3, kettle, toy, bobble]
 
-current_inv = [knife, dolly, machine1, machine2, machine3, kettle, trinket, bobble]
+current_inv = [knife, dolly, machine1, machine2, machine3, kettle, toy, bobble]
 
 
 # define props
@@ -322,6 +323,7 @@ list_select = 0
 select4 = 0
 in_submenu = False
 inv_page = 1
+pause = True
 
 def clear():
     for c in phrases:
@@ -575,6 +577,7 @@ while running:
                 for m in menu_items:
                     m.on = True
                 in_menu = True
+                select.on = True
 
             # Find Keys
             if event.key == pygame.K_0:
@@ -643,7 +646,7 @@ while running:
                 clear()
                 print(P10.on)
 
-                if event.key == pygame.K_EQUALS:
+                if event.key == pygame.K_LCTRL:
                     scrap.on = False
                     in_menu = False
                     in_inv = False
@@ -653,6 +656,9 @@ while running:
                     in_phone = False
                     for m in menu_items:
                         m.on = False
+                    select.on = False
+                    subselect.on = False
+                    in_submenu = False
 
                 if in_menu == True:
                     menu_number = 5
@@ -691,6 +697,7 @@ while running:
                         in_menu = False
                         in_inv = True
                         I0.on = True
+                        pause = False
 
                     # phone
                     elif event.key == pygame.K_RETURN and select.Y == M2.Y:
@@ -727,6 +734,9 @@ while running:
                         in_phone = False
                         for m in menu_items:
                             m.on = False
+                        select.on = False
+                        subselect.on = False
+                        in_submenu = False
 
                 if in_scrap == True:
                     if event.key == pygame.K_DOWN:
@@ -849,7 +859,7 @@ while running:
                                 if m.page == 2:
                                     m.phrase.on = True
 
-                    if event.key == pygame.K_RETURN:
+                    if event.key == pygame.K_RETURN and pause == True:
                         if select.Y == MIY5:
                             in_inv = False
                             in_menu = True
@@ -859,24 +869,60 @@ while running:
                             for m in current_inv:
                                 m.phrase.on = False
                             I0.on = False
+                        else:
+                            for i in items:
+                                if i.page == inv_page and i.phrase.on == True:
+                                    select.on = False
+                                    in_submenu = True
+                                    in_inv = False
+                                    pause = False
+                                    subselect.on = True
 
+                if in_submenu == True:
+                    if event.key == pygame.K_DOWN:
+                        if subselect.Y == SM1.Y:
+                            subselect.Y = SM2.Y
+                        elif subselect.Y == SM2.Y:
+                            subselect.Y = SM3.Y
+                        elif subselect.Y == SM3.Y:
+                            subselect.Y = SM1.Y
+                    if event.key == pygame.K_UP:
+                        if subselect.Y == SM1.Y:
+                            subselect.Y = SM3.Y
+                        elif subselect.Y == SM2.Y:
+                            subselect.Y = SM1.Y
+                        elif subselect.Y == SM3.Y:
+                            subselect.Y = SM2.Y
+                    if event.key == pygame.K_RETURN and pause == True:
+                        if subselect.Y == SM3.Y:
+                            in_inv = True
+                            in_submenu = False
+                            select.on = True
+                            subselect.on = False
+                        if subselect.Y == SM2.Y:
+                            print("you inspected the item!")
+                        if subselect.Y == SM1.Y:
+                            print("you can't use that now!")
 
-        print(I1.on)
-        select.write()
-
-
+        pause = True
         big_draw()
 
-        submenu.draw()
-        if in_menu == True or in_inv == True:
+        if in_menu == True or in_inv == True or in_submenu == True:
             screen.blit(menu_up, (menuX, menuY))
-            select.write()
-            in_submenu = True
+            if select.on == True:
+                select.write()
 
         if in_submenu == True:
             submenu.draw()
             for s in subpicks:
                 s.write()
+            if subselect.on == True:
+                subselect.write()
+            for m in current_inv:
+                if m.phrase.on == True:
+                    m.phrase.write()
+            if I0.on == True:
+                I0.write()
 
         for m in menu_items:
             if m.on == True:
@@ -888,6 +934,7 @@ while running:
                     m.phrase.write()
             if I0.on == True:
                 I0.write()
+
 
         if in_scrap == True:
             for r in rambling:
