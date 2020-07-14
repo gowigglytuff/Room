@@ -101,6 +101,7 @@ class Phrase(object):
         text = screen.blit(label, (self.X, self.Y))
         return text
 
+
 # phrases for bottom left of screen
 P1 = Phrase("The chest opened!", False, 10, 116, white, 10)
 P2 = Phrase("Hello world", False, 10, 116, white, 10)
@@ -115,8 +116,13 @@ P10 = Phrase("You have no items!", False, 10, 116, white, 10)
 P11 = Phrase("Your phone is not charged!", False, 10, 116, white, 10)
 P12 = Phrase("You're already dressed!", False, 10, 116, white, 10)
 P13 = Phrase("Figure it out!", False, 10, 116, white, 10)
+P14 = Phrase("You looked inside!", False, 10, 116, white, 10)
+P15 = Phrase("You can't use that now!", False, 10, 116, white, 10)
+P16 = Phrase("The chest is locked!!", False, 10, 116, white, 10)
+P17 = Phrase("Better not leave yet...", False, 10, 116, white, 10)
+P18 = Phrase("Can't get the tape off...", False, 10, 116, white, 10)
 
-phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13]
+phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18]
 
 
 
@@ -202,22 +208,23 @@ class Item(object):
 
 
 # list of items to appear in inventory
-red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I1, 1)
-yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I2, 1)
-blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I3, 1)
-green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I4, 1)
-knife = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I5, 2)
-dolly = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I6, 2)
-machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I7, 3)
-machine2 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I8, 3)
-machine3 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I9, 3)
-kettle = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I10, 3)
-toy = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I11, 2)
-bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, False, I12, 2)
+red_key = Item((0, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I1, 1)
+yellow_key = Item((32, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I2, 1)
+blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I3, 1)
+green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I4, 1)
+knife = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I5, 2)
+dolly = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I6, 2)
+machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I7, 3)
+machine2 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I8, 3)
+machine3 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I9, 3)
+kettle = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I10, 3)
+toy = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I11, 2)
+bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I12, 2)
 
 items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, machine2, machine3, kettle, toy, bobble]
 
-current_inv = [knife, dolly, machine1, machine2, machine3, kettle, toy, bobble]
+current_inv = [red_key, yellow_key, blue_key, green_key, knife, dolly,
+               machine1, machine2, machine3, kettle, toy, bobble]
 
 
 # define props
@@ -254,11 +261,11 @@ def propat(x, y):
 blue_chest = Prop((0, 0, 32, 25), 'sprites/props.png', 2, 2, True, 0, True)
 yellow_chest = Prop((32, 0, 32, 25), 'sprites/props.png', 4, 0, True, 0, True)
 green_chest = Prop((64, 0, 32, 25), 'sprites/props.png', 5, 4, True, 0, True)
-red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 1, 4, True, 0, True)
-ladder = Prop((128, 25, 31, 25), 'sprites/props.png', 2, 5, False, 0, True)
-box1 = Prop((0, 25, 31, 24), 'sprites/props.png', 6, 5, True, 3, True)
-box2 = Prop((96, 25, 31, 24), 'sprites/props.png', 3, 5, True, 0, True)
-box3 = Prop((32, 25, 31, 24), 'sprites/props.png', 3, 3, True, 3, True)
+red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 3, 3, True, 0, True)
+ladder = Prop((128, 25, 31, 25), 'sprites/props.png', 2, 5, False, 6, True)
+box1 = Prop((0, 25, 31, 24), 'sprites/props.png', 6, 5, True, 5, True)
+box2 = Prop((96, 25, 31, 24), 'sprites/props.png', 3, 5, True, 5, True)
+box3 = Prop((32, 25, 31, 24), 'sprites/props.png', 1, 4, True, 3, True)
 box4 = Prop((64, 25, 31, 24), 'sprites/props.png', 5, 2, True, 3, True)
 phono = Prop((128, 0, 31, 25), 'sprites/props.png', 1, 0, False, 4, True)
 
@@ -275,6 +282,8 @@ submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, Fal
 # 2: key found and prop opened
 # 3: no key found for box
 # 4: interact with phonograph
+# 5: Box opened
+# 6: ladder
 
 props = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono]
 
@@ -340,11 +349,32 @@ def clear_texts():
     for t in textsb:
         t.on = False
 
+def clear_menu():
+    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page
+    scrap.on = False
+    in_menu = False
+    in_inv = False
+    in_scrap = False
+    menu_go = False
+    phone_bg.on = False
+    in_phone = False
+    for m in menu_items:
+        m.on = False
+    select.on = False
+    select.Y = MIY1
+    subselect.on = False
+    subselect.Y = SM1.Y
+    in_submenu = False
+    for o in current_inv:
+        o.phrase.on = False
+    inv_page = 1
+
 
 music_start = 1
 
 # game loop
 running = True
+
 
 # Draw all the props and the player
 def big_draw():
@@ -425,6 +455,48 @@ def big_draw():
         phone_bg.draw()
 
 
+def menu_draw():
+    if in_menu == True or in_inv == True or in_submenu == True:
+        screen.blit(menu_up, (menuX, menuY))
+        if select.on == True:
+            select.write()
+
+    if in_submenu == True:
+        submenu.draw()
+        for s in subpicks:
+            s.write()
+        if subselect.on == True:
+            subselect.write()
+        for m in current_inv:
+            if m.phrase.on == True:
+                m.phrase.write()
+        if I0.on == True:
+            I0.write()
+
+    for m in menu_items:
+        if m.on == True:
+            m.write()
+
+    if in_inv == True:
+        for m in current_inv:
+            if m.phrase.on == True:
+                m.phrase.write()
+        if I0.on == True:
+            I0.write()
+
+    if in_scrap == True:
+        for r in rambling:
+            if r.on == True:
+                r.write()
+    if in_phone == True:
+        for r in texts:
+            if r.on == True:
+                r.write()
+        for r in textsb:
+            if r.on == True:
+                r.write()
+
+
 while running:
 
     # Background Image
@@ -480,9 +552,35 @@ while running:
             # open chests and cardboard boxes
             for target in props:
                 if event.key == pygame.K_RETURN:
-                    if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 2:
-                        print("you looked inside")
+                    if facing == "up" and target.X == playerX and target.Y == playerY - 1:
+                        if target.key == 2:
+                            print("you looked inside")
+                            P14.on = True
+                        if target.key == 0:
+                            print("the chest is locked")
+                            P16.on = True
 
+                    if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
+                        or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
+                        or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
+                        or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) \
+                        and target.key == 5:
+                            print("you looked inside")
+                            P14.on = True
+                    if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
+                        or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
+                        or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
+                        or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) \
+                        and target.key == 6:
+                            print("better not leave until we're finished!")
+                            P17.on = True
+                    if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
+                        or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
+                        or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
+                        or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) \
+                        and target.key == 3:
+                            print("Can't get the tape off...")
+                            P18.on = True
 
                     if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
                     and record == "off":
@@ -498,14 +596,6 @@ while running:
                         P9.on = True
                         play_music = False
                         record = "off"
-
-                    if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
-                      or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
-                      or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
-                      or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) and target.key == 3:
-                        print("the cardboard box opened!")
-                        P7.on = True
-                        target.key = 2
 
                 if event.key == pygame.K_8:
                     if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
@@ -639,25 +729,18 @@ while running:
         mixer.music.pause()
 
     while menu_go == True:
+
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                menu_go = False
 
             if event.type == pygame.KEYDOWN:
                 clear()
                 print(P10.on)
 
                 if event.key == pygame.K_LCTRL:
-                    scrap.on = False
-                    in_menu = False
-                    in_inv = False
-                    in_scrap = False
-                    menu_go = False
-                    phone_bg.on = False
-                    in_phone = False
-                    for m in menu_items:
-                        m.on = False
-                    select.on = False
-                    subselect.on = False
-                    in_submenu = False
+                    clear_menu()
 
                 if in_menu == True:
                     menu_number = 5
@@ -724,18 +807,7 @@ while running:
 
                     # escape
                     elif event.key == pygame.K_RETURN and select.Y == M5.Y:
-                        scrap.on = False
-                        in_menu = False
-                        in_inv = False
-                        in_scrap = False
-                        menu_go = False
-                        phone_bg.on = False
-                        in_phone = False
-                        for m in menu_items:
-                            m.on = False
-                        select.on = False
-                        subselect.on = False
-                        in_submenu = False
+                        clear_menu()
 # in scraps
                 if in_scrap == True:
                     if event.key == pygame.K_DOWN:
@@ -810,7 +882,7 @@ while running:
                         if inv_page == 1:
                             inv_page = 2
                             for m in current_inv:
-                                if m.page == 1:
+                                if m.page == 1 or 3:
                                     m.phrase.on = False
                             for m in current_inv:
                                 if m.page == 2:
@@ -818,7 +890,7 @@ while running:
                         elif inv_page == 2:
                             inv_page = 3
                             for m in current_inv:
-                                if m.page == 2:
+                                if m.page == 2 or 1:
                                     m.phrase.on = False
                             for m in current_inv:
                                 if m.page == 3:
@@ -826,7 +898,7 @@ while running:
                         elif inv_page == 3:
                             inv_page = 1
                             for m in current_inv:
-                                if m.page == 3:
+                                if m.page == 3 or 2:
                                     m.phrase.on = False
                             for m in current_inv:
                                 if m.page == 1:
@@ -870,7 +942,7 @@ while running:
                             I0.on = False
                         else:
                             for i in items:
-                                if i.page == inv_page and i.phrase.on == True:
+                                if i.page == inv_page and i.inv == True:
                                     select.on = False
                                     in_submenu = True
                                     in_inv = False
@@ -912,68 +984,72 @@ while running:
                                         print("the chest opened!")
                                         P1.on = True
                                         red_chest.key = 2
-
+                                        clear_menu()
+                                    else:
+                                        print("you can't use that now...")
+                                        P15.on = True
+                                        in_inv = True
+                                        in_submenu = False
+                                        select.on = True
+                                        subselect.on = False
                                 elif select.Y == MIY2:
                                     if facing == "up" and yellow_chest.X == playerX and yellow_chest.Y == playerY - 1:
                                         P1.on = True
                                         yellow_chest.key = 2
                                         print("the chest opened!")
-
+                                        clear_menu()
+                                    else:
+                                        print("you can't use that now...")
+                                        P15.on = True
+                                        in_inv = True
+                                        in_submenu = False
+                                        select.on = True
+                                        subselect.on = False
                                 elif select.Y == MIY3:
                                     if facing == "up" and blue_chest.X == playerX and blue_chest.Y == playerY - 1:
                                         P1.on = True
                                         blue_chest.key = 2
                                         print("the chest opened!")
-
+                                        clear_menu()
+                                    else:
+                                        print("you can't use that now...")
+                                        P15.on = True
+                                        in_inv = True
+                                        in_submenu = False
+                                        select.on = True
+                                        subselect.on = False
                                 elif select.Y == MIY4:
                                     if facing == "up" and green_chest.X == playerX and green_chest.Y == playerY - 1:
                                         P1.on = True
                                         green_chest.key = 2
                                         print("the chest opened!")
+                                        clear_menu()
+                                    else:
+                                        print("you can't use that now...")
+                                        P15.on = True
+                                        in_inv = True
+                                        in_submenu = False
+                                        select.on = True
+                                        subselect.on = False
+                            if inv_page == 2:
+                                if select.Y == MIY1:
+                                    for target in props:
+                                        if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
+                                            or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
+                                            or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
+                                            or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) \
+                                            and target.key == 3:
+                                                print("the cardboard box opened!")
+                                                P7.on = True
+                                                target.key = 5
+                                                clear_menu()
+                                                for m in current_inv:
+                                                    m.phrase.on = False
+
 
         pause = True
         big_draw()
-
-        if in_menu == True or in_inv == True or in_submenu == True:
-            screen.blit(menu_up, (menuX, menuY))
-            if select.on == True:
-                select.write()
-
-        if in_submenu == True:
-            submenu.draw()
-            for s in subpicks:
-                s.write()
-            if subselect.on == True:
-                subselect.write()
-            for m in current_inv:
-                if m.phrase.on == True:
-                    m.phrase.write()
-            if I0.on == True:
-                I0.write()
-
-        for m in menu_items:
-            if m.on == True:
-                    m.write()
-
-        if in_inv == True:
-            for m in current_inv:
-                if m.phrase.on == True:
-                    m.phrase.write()
-            if I0.on == True:
-                I0.write()
-
-        if in_scrap == True:
-            for r in rambling:
-                if r.on == True:
-                    r.write()
-        if in_phone == True:
-            for r in texts:
-                if r.on == True:
-                    r.write()
-            for r in textsb:
-                if r.on == True:
-                    r.write()
-
+        menu_draw()
         pygame.display.update()
         clock.tick(5)
 
