@@ -57,6 +57,12 @@ sb4 = sb.image_at((40, 0, 19, 30))
 
 walk_back = [sb1, sb2, sb3, sb4]
 
+# Mouse Img
+mouse_left = spritesheet.spritesheet('sprites/mouse.png').image_at((0, 0, 19, 30))
+mouse_back = spritesheet.spritesheet('sprites/mouse.png').image_at((20, 0, 19, 30))
+mouse_right = spritesheet.spritesheet('sprites/mouse.png').image_at((40, 0, 19, 30))
+mouse_front = spritesheet.spritesheet('sprites/mouse.png').image_at((40, 0, 19, 30))
+
 # design the menu
 menuX = 10
 menuY = 10
@@ -122,7 +128,13 @@ P16 = Phrase("The chest is locked!!", False, 10, 116, white, 10)
 P17 = Phrase("Better not leave yet...", False, 10, 116, white, 10)
 P18 = Phrase("Can't get the tape off...", False, 10, 116, white, 10)
 
-phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18]
+# Taps
+P19 = Phrase("It's brightly coloured...", False, 10, 116, white, 10)
+P20 = Phrase("It's very sharp!", False, 10, 116, white, 10)
+
+P21 = Phrase("Aw, it's cute!", False, 10, 116, white, 10)
+
+phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21]
 
 
 
@@ -145,14 +157,16 @@ I3 = Phrase("b. key", False, MIX, MIY3, black, 8)
 I4 = Phrase("g. key", False, MIX, MIY4, black, 8)
 I5 = Phrase("knife", False, MIX, MIY1, black, 8)
 I6 = Phrase("dolly", False, MIX, MIY3, black, 8)
-I7 = Phrase("part 1", False, MIX, MIY1, black, 8)
-I8 = Phrase("part 2", False, MIX, MIY2, black, 8)
-I9 = Phrase("part 3", False, MIX, MIY3, black, 8)
+I7a = Phrase("partx1", False, MIX, MIY1, black, 8)
+I7b = Phrase("partx2", False, MIX, MIY1, black, 8)
+I7c = Phrase("partx3", False, MIX, MIY1, black, 8)
+I8 = Phrase("duster", False, MIX, MIY2, black, 8)
+I9 = Phrase("snack", False, MIX, MIY3, black, 8)
 I10 = Phrase("kettle", False, MIX, MIY4, black, 8)
 I11 = Phrase("toy", False, MIX, MIY4, black, 8)
 I12 = Phrase("bobble", False, MIX, MIY2, black, 8)
 
-inventory = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
+inventory = [I1, I2, I3, I4, I5, I6, I7a, I7b, I7c, I8, I9]
 
 # phrases for scraps
 S1 = Phrase("The rats are dancing to jazz", False, menuX + 6, menuY + 15, black, 8)
@@ -214,17 +228,17 @@ blue_key = Item((64, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I3, 1)
 green_key = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I4, 1)
 knife = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I5, 2)
 dolly = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I6, 2)
-machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I7, 3)
-machine2 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I8, 3)
-machine3 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I9, 3)
+machine1 = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I7a, 3)
+duster = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I8, 3)
+snack = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I9, 3)
 kettle = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I10, 3)
 toy = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I11, 2)
 bobble = Item((96, 0, 32, 32), 'sprites/Keys.png', 3.5, 2, True, I12, 2)
 
-items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, machine2, machine3, kettle, toy, bobble]
+items = [red_key, yellow_key, blue_key, green_key, knife, dolly, machine1, duster, snack, kettle, toy, bobble]
 
 current_inv = [red_key, yellow_key, blue_key, green_key, knife, dolly,
-               machine1, machine2, machine3, kettle, toy, bobble]
+               machine1, duster, snack, kettle, toy, bobble]
 
 
 # define props
@@ -248,11 +262,20 @@ class Prop(object):
         screen.blit(image, (self.X*tileX, self.Y*tileY+(tileY/2)))
         return image
 
+    def drawmouse(self):
+        # "Loads image from x,y,x+offset,y+offset"
+        rect = pygame.Rect(self.rectangle)
+        image = pygame.Surface(rect.size).convert()
+        image.blit(self.sheet, (0, 0), rect)
+        colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey, pygame.RLEACCEL)
+        screen.blit(image, ((self.X*tileX)+8, self.Y*tileY))
+        return image
 
 # define propat function for making sure player doesnt walk over box
 def propat(x, y):
-    for c in props:
-        if x == c.X and y == c.Y:
+    for c in propslist:
+        if x == c.X and y == c.Y and c.on == True:
             return True
     return False
 
@@ -276,6 +299,8 @@ phone_bg = Prop((0, 0, 256, 128), "sprites/phone.png", 0, -0.5, False, 0, False)
 
 submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, False)
 
+mousey = Prop((0, 0, 19, 30), "sprites/mouse.png", 4, 0, False, 100, False)
+
 # self.key code:
 # 0: no key found for chest
 # 1: key found but prop not opened
@@ -285,8 +310,9 @@ submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, Fal
 # 5: Box opened
 # 6: ladder
 
-props = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono]
 
+props = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono]
+propslist = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono, mousey]
 
 # define record
 class Record(object):
@@ -317,6 +343,7 @@ def player(x, y):
 
 
 # initialization of variables
+FPS = 5
 in_room = True
 red_keyX = False
 blue_keyX = False
@@ -333,6 +360,9 @@ select4 = 0
 in_submenu = False
 inv_page = 1
 pause = True
+mouse_tick = 0
+mouse_ticking = True
+mouse_stay = False
 
 def clear():
     for c in phrases:
@@ -380,6 +410,9 @@ running = True
 def big_draw():
     # Background Image
     screen.blit(background_image, [0, 0])
+
+    if mousey.on == True:
+        mousey.drawmouse()
 
     for p in props:
         if p.Y <= playerY:
@@ -544,10 +577,14 @@ while running:
                 if not propat(playerX, playerY-1) and playerY != 0:
                     playerY += -1
 
-            # Track movement
-            print("Keystroke pressed")
-            print(facing)
-            print(playerX, playerY)
+# interact with mousey
+            if event.key == pygame.K_RETURN:
+                if ((facing == "up" and mousey.X == playerX and mousey.Y == playerY - 1)
+                    or (facing == "down" and mousey.X == playerX and mousey.Y == playerY + 1)
+                    or (facing == "left" and mousey.X == playerX - 1 and mousey.Y == playerY)
+                    or (facing == "right" and mousey.X == playerX + 1 and mousey.Y == playerY))\
+                        and mousey.on == True:
+                        P21.on = True
 
             # open chests and cardboard boxes
             for target in props:
@@ -596,22 +633,25 @@ while running:
                         P9.on = True
                         play_music = False
                         record = "off"
+                        mouse_stay = False
 
+                # Play record 2
                 if event.key == pygame.K_8:
-                    if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
-                    and record == "off":
-                        print("You put on a record")
-                        P8.on = True
-                        music_start = 3
-                        play_music = True
-                        record = "on"
+                    if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4:
+                        if record == "off":
+                            print("You put on a record")
+                            P8.on = True
+                            music_start = 3
+                            play_music = True
+                            record = "on"
+                            mouse_stay = True
 
-                    elif facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
-                    and record == "on":
-                        print("You stopped the record")
-                        P9.on = True
-                        play_music = False
-                        record = "off"
+                        elif record == "on":
+                            print("You stopped the record")
+                            P9.on = True
+                            play_music = False
+                            record = "off"
+                            mouse_stay = False
 
                     # if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 5:
                     #     print("You put on a record")
@@ -661,6 +701,7 @@ while running:
                         playerY -= 1
                         target.Y -= 1
 
+            # Open Menu
             if event.key == pygame.K_LCTRL and menu_go == False:
                 menu_go = True
                 for m in menu_items:
@@ -705,6 +746,29 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
+
+    for f in props:
+        if f.X != 4 and f.Y != 0:
+            if playerY > 2 or playerX < 3 or playerX > 5:
+                mousey.on = True
+                print("hmm")
+
+    if (playerX == 3 or playerX == 4 or playerX == 5)and playerY < 3 and mouse_stay == False:
+        mousey.on = False
+
+
+# mouse animations
+    if mouse_ticking == True:
+        mouse_tick += 1
+        if mouse_tick == 5:
+            mousey.rectangle = (0, 0, 19, 30)
+        if mouse_tick == 10:
+            mousey.rectangle = (19, 0, 19, 30)
+        if mouse_tick == 15:
+            mousey.rectangle = (38, 0, 19, 30)
+        if mouse_tick == 20:
+            mousey.rectangle = (57, 0, 19, 30)
+            mouse_tick = 1
 
     # switch between in room and crawlspace
     if playerX == 0 and playerY == 4:
@@ -941,13 +1005,32 @@ while running:
                                 m.phrase.on = False
                             I0.on = False
                         else:
-                            for i in items:
-                                if i.page == inv_page and i.inv == True:
-                                    select.on = False
-                                    in_submenu = True
-                                    in_inv = False
-                                    pause = False
-                                    subselect.on = True
+                            for i in current_inv:
+                                if i.page == inv_page and i.inv == True and i.phrase.Y == select.Y:
+                                    if select.Y == MIY1:
+                                        select.on = False
+                                        in_submenu = True
+                                        in_inv = False
+                                        pause = False
+                                        subselect.on = True
+                                    if select.Y == MIY2:
+                                        select.on = False
+                                        in_submenu = True
+                                        in_inv = False
+                                        pause = False
+                                        subselect.on = True
+                                    if select.Y == MIY3:
+                                        select.on = False
+                                        in_submenu = True
+                                        in_inv = False
+                                        pause = False
+                                        subselect.on = True
+                                    if select.Y == MIY4:
+                                        select.on = False
+                                        in_submenu = True
+                                        in_inv = False
+                                        pause = False
+                                        subselect.on = True
 # in submenu
                 if in_submenu == True:
                     if event.key == pygame.K_DOWN:
@@ -973,8 +1056,13 @@ while running:
 # submenu "tap" button
                         if subselect.Y == SM2.Y:
                             if inv_page == 1:
-                                if select.Y == MIY1:
+                                if select.Y == MIY1 or MIY2 or MIY3 or MIY4:
+                                    P19.on = True
                                     print("I wonder if the colour means anything...")
+                            if inv_page == 2:
+                                if select.Y == MIY1:
+                                    print("It's very sharp!")
+                                    P20.on = True
 
 # submenu "use" button
                         if subselect.Y == SM1.Y:
@@ -1037,16 +1125,22 @@ while running:
                                         if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
                                             or (facing == "down" and target.X == playerX and target.Y == playerY + 1)
                                             or (facing == "left" and target.X == playerX - 1 and target.Y == playerY)
-                                            or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)) \
-                                            and target.key == 3:
-                                                print("the cardboard box opened!")
-                                                P7.on = True
-                                                target.key = 5
-                                                clear_menu()
-                                                for m in current_inv:
-                                                    m.phrase.on = False
-
-
+                                            or (facing == "right" and target.X == playerX + 1 and target.Y == playerY)):
+                                                if target.key == 3:
+                                                    print("the cardboard box opened!")
+                                                    P7.on = True
+                                                    target.key = 5
+                                                    clear_menu()
+                                                    for m in current_inv:
+                                                        m.phrase.on = False
+                                                elif target.key != 3:
+                                                    print("you can't use that now...")
+                                                    P15.on = True
+                                                    in_inv = True
+                                                    in_submenu = False
+                                                    select.on = True
+                                                    subselect.on = False
+        print(inv_page)
         pause = True
         big_draw()
         menu_draw()
@@ -1055,4 +1149,4 @@ while running:
 
     pygame.display.update()
 
-    clock.tick(5)
+    clock.tick(FPS)
