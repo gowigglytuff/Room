@@ -19,43 +19,79 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 green = (3, 87, 43)
 
+suit_left = 'sprites/suit_left.png'
+suit_right = 'sprites/suit_right.png'
+suit_front = 'sprites/suit_front.png'
+suit_back = 'sprites/suit_back.png'
+
+shop_left = 'sprites/ShopLeft.png'
+shop_right = 'sprites/ShopRight.png'
+shop_front = 'sprites/ShopFront.png'
+shop_back = 'sprites/ShopBack.png'
+
+left_image = shop_left
+right_image = shop_right
+front_image = shop_front
+back_image = shop_back
+
+
 # Player Image
-sl = spritesheet.spritesheet('sprites/ShopLeft.png')
-sr = spritesheet.spritesheet('sprites/ShopRight.png')
-sf = spritesheet.spritesheet('sprites/ShopFront.png')
-sb = spritesheet.spritesheet('sprites/ShopBack.png')
+sl = spritesheet.spritesheet(left_image)
+sr = spritesheet.spritesheet(right_image)
+sf = spritesheet.spritesheet(front_image)
+sb = spritesheet.spritesheet(back_image)
+
+suit_left1 = spritesheet.spritesheet(suit_left).image_at((0, 0, 19, 30))
+suit_left2 = spritesheet.spritesheet(suit_left).image_at((19, 0, 19, 30))
+suit_left3 = spritesheet.spritesheet(suit_left).image_at((38, 0, 19, 30))
+suit_left4 = spritesheet.spritesheet(suit_left).image_at((57, 0, 19, 30))
+
+suit_right1 = spritesheet.spritesheet(suit_right).image_at((0, 0, 19, 30))
+suit_right2 = spritesheet.spritesheet(suit_right).image_at((19, 0, 19, 30))
+suit_right3 = spritesheet.spritesheet(suit_right).image_at((38, 0, 19, 30))
+suit_right4 = spritesheet.spritesheet(suit_right).image_at((57, 0, 19, 30))
+
+suit_front1 = spritesheet.spritesheet(suit_front).image_at((0, 0, 19, 30))
+suit_front2 = spritesheet.spritesheet(suit_front).image_at((19, 0, 19, 30))
+suit_front3 = spritesheet.spritesheet(suit_front).image_at((38, 0, 19, 30))
+suit_front4 = spritesheet.spritesheet(suit_front).image_at((57, 0, 19, 30))
+
+suit_back1 = spritesheet.spritesheet(suit_back).image_at((0, 0, 19, 30))
+suit_back2 = spritesheet.spritesheet(suit_back).image_at((19, 0, 19, 30))
+suit_back3 = spritesheet.spritesheet(suit_back).image_at((38, 0, 19, 30))
+suit_back4 = spritesheet.spritesheet(suit_back).image_at((57, 0, 19, 30))
 
 # left walk image list
-sl1 = sl.image_at((0, 0, 19, 30))
-sl2 = sl.image_at((20, 0, 19, 30))
-sl3 = sl.image_at((40, 0, 19, 30))
-sl4 = sl.image_at((40, 0, 19, 30))
+shop_left1 = sl.image_at((0, 0, 19, 30))
+shop_left2 = sl.image_at((19, 0, 19, 30))
+shop_left3 = sl.image_at((38, 0, 19, 30))
+shop_left4 = sl.image_at((57, 0, 19, 30))
 
-walk_left = [sl1, sl2, sl3, sl4]
+walk_left = [shop_left1, shop_left2, shop_left3, shop_left4]
 
-# left walk image list
-sr1 = sr.image_at((0, 0, 19, 30))
-sr2 = sr.image_at((20, 0, 19, 30))
-sr3 = sr.image_at((40, 0, 19, 30))
-sr4 = sr.image_at((40, 0, 19, 30))
+# right walk image list
+shop_right1 = sr.image_at((0, 0, 19, 30))
+shop_right2 = sr.image_at((19, 0, 19, 30))
+shop_right3 = sr.image_at((38, 0, 19, 30))
+shop_right4 = sr.image_at((57, 0, 19, 30))
 
-walk_right = [sr1, sr2, sr3, sr4]
+walk_right = [shop_right1, shop_right2, shop_right3, shop_right4]
 
 # front walk image list
-sf1 = sf.image_at((0, 0, 19, 30))
-sf2 = sf.image_at((20, 0, 19, 30))
-sf3 = sf.image_at((40, 0, 19, 30))
-sf4 = sf.image_at((40, 0, 19, 30))
+shop_front1 = sf.image_at((0, 0, 19, 30))
+shop_front2 = sf.image_at((19, 0, 19, 30))
+shop_front3 = sf.image_at((38, 0, 19, 30))
+shop_front4 = sf.image_at((57, 0, 19, 30))
 
-walk_front = [sf1, sf2, sf3, sf4]
+walk_front = [shop_front1, shop_front2, shop_front3, shop_front4]
 
 # back walk image list
-sb1 = sb.image_at((0, 0, 19, 30))
-sb2 = sb.image_at((20, 0, 19, 30))
-sb3 = sb.image_at((40, 0, 19, 30))
-sb4 = sb.image_at((40, 0, 19, 30))
+shop_back1 = sb.image_at((0, 0, 19, 30))
+shop_back2 = sb.image_at((19, 0, 19, 30))
+shop_back3 = sb.image_at((38, 0, 19, 30))
+shop_back4 = sb.image_at((57, 0, 19, 30))
 
-walk_back = [sb1, sb2, sb3, sb4]
+walk_back = [shop_back1, shop_back2, shop_back3, shop_back4]
 
 # Mouse Img
 mouse_left = spritesheet.spritesheet('sprites/mouse.png').image_at((0, 0, 19, 30))
@@ -195,6 +231,16 @@ SM3 = Phrase("esc", False, menuX + 76, menuY + 34, black, 8)
 
 subpicks = [SM1, SM2, SM3]
 
+R1 = Phrase("rec1", False, 70, 18, black, 8)
+R2 = Phrase("rec2", False, 70, 31, black, 8)
+R3 = Phrase("rec3", False, 70, 44, black, 8)
+R4 = Phrase("rec4", False, 70, 57, black, 8)
+R5 = Phrase("esc", False, 70, 68, black, 8)
+record_select = Phrase("-", False, 70 + 32, R1.Y, black, 8)
+
+current_records = [R1, R2, R3, R4, R5, record_select]
+records = [R1, R2, R3, R4, R5, record_select]
+
 subselect = Phrase("-", False, SM1.X + 25, SM1.Y, black, 8)
 
 # define items
@@ -284,7 +330,7 @@ def propat(x, y):
 blue_chest = Prop((0, 0, 32, 25), 'sprites/props.png', 2, 2, True, 0, True)
 yellow_chest = Prop((32, 0, 32, 25), 'sprites/props.png', 4, 0, True, 0, True)
 green_chest = Prop((64, 0, 32, 25), 'sprites/props.png', 5, 4, True, 0, True)
-red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 3, 3, True, 0, True)
+red_chest = Prop((96, 0, 32, 25), 'sprites/props.png', 6, 0, True, 0, True)
 ladder = Prop((128, 25, 31, 25), 'sprites/props.png', 2, 5, False, 6, True)
 box1 = Prop((0, 25, 31, 24), 'sprites/props.png', 6, 5, True, 5, True)
 box2 = Prop((96, 25, 31, 24), 'sprites/props.png', 3, 5, True, 5, True)
@@ -298,6 +344,8 @@ scrap = Prop((0, 0, 256, 128), "sprites/scrap.png", 0, -0.5, False, 0, False)
 phone_bg = Prop((0, 0, 256, 128), "sprites/phone.png", 0, -0.5, False, 0, False)
 
 submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, False)
+
+record_menu = Prop((0, 0, 50, 75), "sprites/record_menu.png", 2, 0, False, 0, False)
 
 mousey = Prop((0, 0, 19, 30), "sprites/mouse.png", 4, 0, False, 100, False)
 
@@ -316,8 +364,10 @@ propslist = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box
 
 # define record
 class Record(object):
-    def __init__(self, audio):
+    def __init__(self, audio, phrase, have):
         self.audio = audio
+        self.phrase = phrase
+        self.have = have
 
     def sing(self):
         mixer.music.load(self.audio)
@@ -327,9 +377,10 @@ class Record(object):
 
 
 # list of available records
-record1 = Record("audio/record1.mp3")
-record2 = Record("audio/record2.mp3")
-
+record1 = Record("audio/record1.mp3", R1, True)
+record2 = Record("audio/record2.mp3", R2, True)
+record3 = Record("audio/record3.mp3", R3, True)
+record4 = Record("audio/record4.mp3", R4, True)
 mixer.init()
 play_music = False
 
@@ -343,7 +394,7 @@ def player(x, y):
 
 
 # initialization of variables
-FPS = 5
+FPS = 50
 in_room = True
 red_keyX = False
 blue_keyX = False
@@ -357,12 +408,21 @@ in_scrap = False
 in_phone = False
 list_select = 0
 select4 = 0
+in_record_menu = False
 in_submenu = False
 inv_page = 1
 pause = True
 mouse_tick = 0
 mouse_ticking = True
 mouse_stay = False
+outfit = 1
+
+animating = False
+left_animation = False
+right_animation = False
+up_animation = False
+down_animation = False
+tick = 0
 
 def clear():
     for c in phrases:
@@ -380,7 +440,7 @@ def clear_texts():
         t.on = False
 
 def clear_menu():
-    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page
+    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page, in_record_menu
     scrap.on = False
     in_menu = False
     in_inv = False
@@ -398,9 +458,13 @@ def clear_menu():
     for o in current_inv:
         o.phrase.on = False
     inv_page = 1
+    for f in current_records:
+        f.on = False
+    record_menu.on = False
+    in_record_menu = False
 
 
-music_start = 1
+music_start = 0
 
 # game loop
 running = True
@@ -530,6 +594,13 @@ def menu_draw():
                 r.write()
 
 
+    if record_menu.on == True:
+        record_menu.draw()
+
+    for n in records:
+        if n.on == True:
+            n.write()
+
 while running:
 
     # Background Image
@@ -546,6 +617,57 @@ while running:
             # clear any text
             clear()
             red_keyX = False
+
+            if event.key == pygame.K_EQUALS:
+                if outfit == 1:
+                    walk_left.clear()
+                    walk_left.extend((suit_left1, suit_left2, suit_left3, suit_left4))
+                    walk_right.clear()
+                    walk_right.extend((suit_right1, suit_right2, suit_right3, suit_right4))
+                    walk_front.clear()
+                    walk_front.extend((suit_front1, suit_front2, suit_front3, suit_front4))
+                    walk_back.clear()
+                    walk_back.extend((suit_back1, suit_back2, suit_back3, suit_back4))
+                    if facing == "left":
+                        playerImg = walk_left[0]
+                    if facing == "right":
+                        playerImg = walk_right[0]
+                    if facing == "down":
+                        playerImg = walk_front[0]
+                    if facing == "up":
+                        playerImg = walk_back[0]
+                    outfit = 2
+                elif outfit == 2:
+                    walk_left.clear()
+                    walk_left.extend((shop_left1, shop_left2, shop_left3, shop_left4))
+                    walk_right.clear()
+                    walk_right.extend((shop_right1, shop_right2, shop_right3, shop_right4))
+                    walk_front.clear()
+                    walk_front.extend((shop_front1, shop_front2, shop_front3, shop_front4))
+                    walk_back.clear()
+                    walk_back.extend((shop_back1, shop_back2, shop_back3, shop_back4))
+                    if facing == "left":
+                        playerImg = walk_left[0]
+                    if facing == "right":
+                        playerImg = walk_right[0]
+                    if facing == "down":
+                        playerImg = walk_front[0]
+                    if facing == "up":
+                        playerImg = walk_back[0]
+                    outfit = 1
+
+            if event.key == pygame.K_5:
+                left_animation = True
+                animating = True
+            if event.key == pygame.K_6:
+                right_animation = True
+                animating = True
+            if event.key == pygame.K_4:
+                up_animation = True
+                animating = True
+            if event.key == pygame.K_7:
+                down_animation = True
+                animating = True
 
             # player movement on grid
             if event.key == pygame.K_LEFT:
@@ -565,14 +687,14 @@ while running:
                     playerX += 1
 
             if event.key == pygame.K_DOWN:
-                playerImg = sf.image_at((0, 0, 19, 30))
+                playerImg = walk_front[0]
                 facing = "down"
                 if not propat(playerX, playerY+1) \
                 and ((playerY != 5 and playerX > 0) or (playerY != 6 and playerX == 0)):
                     playerY += 1
 
             if event.key == pygame.K_UP:
-                playerImg = sb.image_at((0, 0, 19, 30))
+                playerImg = walk_back[0]
                 facing = "up"
                 if not propat(playerX, playerY-1) and playerY != 0:
                     playerY += -1
@@ -621,10 +743,13 @@ while running:
 
                     if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
                     and record == "off":
-                        print("You put on a record")
-                        P8.on = True
-                        play_music = True
-                        record = "on"
+                        menu_go = True
+                        in_record_menu = True
+                        for f in current_records:
+                            f.on = True
+                        record_menu.on = True
+
+
 
                     elif facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4 \
                     and record == "on":
@@ -634,30 +759,6 @@ while running:
                         play_music = False
                         record = "off"
                         mouse_stay = False
-
-                # Play record 2
-                if event.key == pygame.K_8:
-                    if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 4:
-                        if record == "off":
-                            print("You put on a record")
-                            P8.on = True
-                            music_start = 3
-                            play_music = True
-                            record = "on"
-                            mouse_stay = True
-
-                        elif record == "on":
-                            print("You stopped the record")
-                            P9.on = True
-                            play_music = False
-                            record = "off"
-                            mouse_stay = False
-
-                    # if facing == "up" and target.X == playerX and target.Y == playerY - 1 and target.key == 5:
-                    #     print("You put on a record")
-                    #     clear()
-                    #     P9.on = True
-                    #     target.key = 4
 
             # push props forward
             if event.key == pygame.K_SPACE:
@@ -751,7 +852,6 @@ while running:
         if f.X != 4 and f.Y != 0:
             if playerY > 2 or playerX < 3 or playerX > 5:
                 mousey.on = True
-                print("hmm")
 
     if (playerX == 3 or playerX == 4 or playerX == 5)and playerY < 3 and mouse_stay == False:
         mousey.on = False
@@ -786,6 +886,14 @@ while running:
         record2.sing()
         music_start = 2
 
+    if music_start == 4:
+        record3.sing()
+        music_start = 2
+
+    if music_start == 5:
+        record4.sing()
+        music_start = 2
+
     if play_music == True:
         mixer.music.unpause()
 
@@ -805,7 +913,65 @@ while running:
 
                 if event.key == pygame.K_LCTRL:
                     clear_menu()
+# record Menu
+                if in_record_menu == True:
+                    if event.key == pygame.K_DOWN:
+                        if record_select.Y == R1.Y:
+                            record_select.Y = R2.Y
+                        elif record_select.Y == R2.Y:
+                            record_select.Y = R3.Y
+                        elif record_select.Y == R3.Y:
+                            record_select.Y = R4.Y
+                        elif record_select.Y == R4.Y:
+                            record_select.Y = R5.Y
+                        elif record_select.Y == R5.Y:
+                            record_select.Y = R1.Y
+                    if event.key == pygame.K_UP:
+                        if record_select.Y == R1.Y:
+                            record_select.Y = R5.Y
+                        elif record_select.Y == R2.Y:
+                            record_select.Y = R1.Y
+                        elif record_select.Y == R3.Y:
+                            record_select.Y = R2.Y
+                        elif record_select.Y == R4.Y:
+                            record_select.Y = R3.Y
+                        elif record_select.Y == R5.Y:
+                            record_select.Y = R4.Y
+                    if event.key == pygame.K_RETURN:
+                        if record_select.Y == R1.Y and record1.have == True:
+                            P8.on = True
+                            music_start = 1
+                            play_music = True
+                            record = "on"
+                            in_record_menu = False
+                            clear_menu()
+                        if record_select.Y == R2.Y and record2.have == True:
+                            P8.on = True
+                            music_start = 3
+                            play_music = True
+                            record = "on"
+                            mouse_stay = True
+                            in_record_menu = False
+                            clear_menu()
+                        if record_select.Y == R3.Y and record3.have == True:
+                            P8.on = True
+                            music_start = 4
+                            play_music = True
+                            record = "on"
+                            in_record_menu = False
+                            clear_menu()
+                        if record_select.Y == R4.Y and record4.have == True:
+                            P8.on = True
+                            music_start = 5
+                            play_music = True
+                            record = "on"
+                            in_record_menu = False
+                            clear_menu()
+                        if record_select.Y == R5.Y:
+                            in_record_menu = False
+                            clear_menu()
 
+                # in Menu
                 if in_menu == True:
                     menu_number = 5
 
@@ -1145,7 +1311,100 @@ while running:
         big_draw()
         menu_draw()
         pygame.display.update()
-        clock.tick(5)
+        clock.tick(FPS)
+
+    while animating == True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                animating = False
+
+        if left_animation == True:
+            if tick == 0:
+                playerImg = walk_left[1]
+                print("1")
+                playerX -= .25
+            if tick == 5:
+                playerImg = walk_left[2]
+                print("2")
+                playerX -= .25
+            if tick == 10:
+                playerImg = walk_left[3]
+                print("3")
+                playerX -= .25
+            if tick == 15:
+                playerImg = walk_left[0]
+                playerX -= .25
+            if tick == 16:
+                tick = 0
+                left_animation = False
+                animating = False
+        if right_animation == True:
+            if tick == 0:
+                playerImg = walk_right[1]
+                print("1")
+                playerX += .25
+            if tick == 5:
+                playerImg = walk_right[2]
+                print("2")
+                playerX += .25
+            if tick == 10:
+                playerImg = walk_right[3]
+                print("3")
+                playerX += .25
+            if tick == 15:
+                playerImg = walk_right[0]
+                playerX += .25
+            if tick == 16:
+                tick = 0
+                right_animation = False
+                animating = False
+        if up_animation == True:
+            if tick == 0:
+                playerImg = walk_back[1]
+                print("1")
+                playerY -= .25
+            if tick == 5:
+                playerImg = walk_back[2]
+                print("2")
+                playerY -= .25
+            if tick == 10:
+                playerImg = walk_back[3]
+                print("3")
+                playerY -= .25
+            if tick == 15:
+                playerImg = walk_back[0]
+                playerY -= .25
+            if tick == 16:
+                tick = 0
+                up_animation = False
+                animating = False
+        if down_animation == True:
+            if tick == 0:
+                playerImg = walk_front[1]
+                print("1")
+                playerY += .25
+            if tick == 5:
+                playerImg = walk_front[2]
+                print("2")
+                playerY += .25
+            if tick == 10:
+                playerImg = walk_front[3]
+                print("3")
+                playerY += .25
+            if tick == 15:
+                playerImg = walk_front[0]
+                playerY += .25
+            if tick == 16:
+                tick = 0
+                down_animation = False
+                animating = False
+        if animating == True:
+            tick += 1
+
+        big_draw()
+        pygame.display.update()
+        clock.tick(FPS)
 
     pygame.display.update()
 
