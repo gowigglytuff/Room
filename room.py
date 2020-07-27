@@ -24,6 +24,11 @@ suit_right = 'sprites/suit_right.png'
 suit_front = 'sprites/suit_front.png'
 suit_back = 'sprites/suit_back.png'
 
+cow_left = 'sprites/cow_left.png'
+cow_right = 'sprites/cow_right.png'
+cow_front = 'sprites/cow_front.png'
+cow_back = 'sprites/cow_back.png'
+
 shop_left = 'sprites/ShopLeft.png'
 shop_right = 'sprites/ShopRight.png'
 shop_front = 'sprites/ShopFront.png'
@@ -41,6 +46,7 @@ sr = spritesheet.spritesheet(right_image)
 sf = spritesheet.spritesheet(front_image)
 sb = spritesheet.spritesheet(back_image)
 
+# suit images
 suit_left1 = spritesheet.spritesheet(suit_left).image_at((0, 0, 19, 30))
 suit_left2 = spritesheet.spritesheet(suit_left).image_at((19, 0, 19, 30))
 suit_left3 = spritesheet.spritesheet(suit_left).image_at((38, 0, 19, 30))
@@ -60,6 +66,27 @@ suit_back1 = spritesheet.spritesheet(suit_back).image_at((0, 0, 19, 30))
 suit_back2 = spritesheet.spritesheet(suit_back).image_at((19, 0, 19, 30))
 suit_back3 = spritesheet.spritesheet(suit_back).image_at((38, 0, 19, 30))
 suit_back4 = spritesheet.spritesheet(suit_back).image_at((57, 0, 19, 30))
+
+# cow images
+cow_left1 = spritesheet.spritesheet(cow_left).image_at((0, 0, 19, 30))
+cow_left2 = spritesheet.spritesheet(cow_left).image_at((19, 0, 19, 30))
+cow_left3 = spritesheet.spritesheet(cow_left).image_at((38, 0, 19, 30))
+cow_left4 = spritesheet.spritesheet(cow_left).image_at((57, 0, 19, 30))
+
+cow_right1 = spritesheet.spritesheet(cow_right).image_at((0, 0, 19, 30))
+cow_right2 = spritesheet.spritesheet(cow_right).image_at((19, 0, 19, 30))
+cow_right3 = spritesheet.spritesheet(cow_right).image_at((38, 0, 19, 30))
+cow_right4 = spritesheet.spritesheet(cow_right).image_at((57, 0, 19, 30))
+
+cow_front1 = spritesheet.spritesheet(cow_front).image_at((0, 0, 19, 30))
+cow_front2 = spritesheet.spritesheet(cow_front).image_at((19, 0, 19, 30))
+cow_front3 = spritesheet.spritesheet(cow_front).image_at((38, 0, 19, 30))
+cow_front4 = spritesheet.spritesheet(cow_front).image_at((57, 0, 19, 30))
+
+cow_back1 = spritesheet.spritesheet(cow_back).image_at((0, 0, 19, 30))
+cow_back2 = spritesheet.spritesheet(cow_back).image_at((19, 0, 19, 30))
+cow_back3 = spritesheet.spritesheet(cow_back).image_at((38, 0, 19, 30))
+cow_back4 = spritesheet.spritesheet(cow_back).image_at((57, 0, 19, 30))
 
 # left walk image list
 shop_left1 = sl.image_at((0, 0, 19, 30))
@@ -156,7 +183,7 @@ P8 = Phrase("You played a record!", False, 10, 116, white, 10)
 P9 = Phrase("You stopped the record!", False, 10, 116, white, 10)
 P10 = Phrase("You have no items!", False, 10, 116, white, 10)
 P11 = Phrase("Your phone is not charged!", False, 10, 116, white, 10)
-P12 = Phrase("You're already dressed!", False, 10, 116, white, 10)
+P12 = Phrase("You put on fresh digs!", False, 10, 116, white, 10)
 P13 = Phrase("Figure it out!", False, 10, 116, white, 10)
 P14 = Phrase("You looked inside!", False, 10, 116, white, 10)
 P15 = Phrase("You can't use that now!", False, 10, 116, white, 10)
@@ -347,6 +374,12 @@ submenu = Prop((0, 0, 45, 50), "sprites/submenu.png", 80/32, 2/16, False, 0, Fal
 
 record_menu = Prop((0, 0, 50, 75), "sprites/record_menu.png", 2, 0, False, 0, False)
 
+outfit_shop = Prop((0, 0, 37, 36),  'sprites/outfit_shop.png', 110/32, 36/16, False, 0, False)
+outfit_cow = Prop((0, 0, 37, 36),  'sprites/outfit_cow.png', 110/32, 36/16, False, 0, False)
+outfit_suit = Prop((0, 0, 37, 36),  'sprites/outfit_suit.png', 110/32, 36/16, False, 0, False)
+
+outfits = [outfit_shop, outfit_cow, outfit_suit]
+
 mousey = Prop((0, 0, 19, 30), "sprites/mouse.png", 4, 0, False, 100, False)
 
 # self.key code:
@@ -357,6 +390,7 @@ mousey = Prop((0, 0, 19, 30), "sprites/mouse.png", 4, 0, False, 100, False)
 # 4: interact with phonograph
 # 5: Box opened
 # 6: ladder
+# 7:
 
 
 props = [blue_chest, yellow_chest, green_chest, red_chest, ladder, box1, box2, box3, box4, phono]
@@ -394,7 +428,7 @@ def player(x, y):
 
 
 # initialization of variables
-FPS = 50
+FPS = 100
 in_room = True
 red_keyX = False
 blue_keyX = False
@@ -415,7 +449,9 @@ pause = True
 mouse_tick = 0
 mouse_ticking = True
 mouse_stay = False
-outfit = 1
+outfit = 2
+in_outfits = False
+outfit_select = 0
 
 animating = False
 left_animation = False
@@ -440,7 +476,7 @@ def clear_texts():
         t.on = False
 
 def clear_menu():
-    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page, in_record_menu
+    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page, in_record_menu, in_outfits
     scrap.on = False
     in_menu = False
     in_inv = False
@@ -462,7 +498,15 @@ def clear_menu():
         f.on = False
     record_menu.on = False
     in_record_menu = False
-
+    for t in texts:
+        t.on = False
+    for t in textsb:
+        t.on = False
+    for r in rambling:
+        r.on = False
+    in_outfits = False
+    for x in outfits:
+        x.on = False
 
 music_start = 0
 
@@ -601,6 +645,11 @@ def menu_draw():
         if n.on == True:
             n.write()
 
+    for x in outfits:
+        if x.on == True:
+            x.draw()
+
+
 while running:
 
     # Background Image
@@ -619,7 +668,7 @@ while running:
             red_keyX = False
 
             if event.key == pygame.K_EQUALS:
-                if outfit == 1:
+                if outfit == 2:
                     walk_left.clear()
                     walk_left.extend((suit_left1, suit_left2, suit_left3, suit_left4))
                     walk_right.clear()
@@ -636,8 +685,8 @@ while running:
                         playerImg = walk_front[0]
                     if facing == "up":
                         playerImg = walk_back[0]
-                    outfit = 2
-                elif outfit == 2:
+                    outfit = 3
+                elif outfit == 1:
                     walk_left.clear()
                     walk_left.extend((shop_left1, shop_left2, shop_left3, shop_left4))
                     walk_right.clear()
@@ -646,6 +695,24 @@ while running:
                     walk_front.extend((shop_front1, shop_front2, shop_front3, shop_front4))
                     walk_back.clear()
                     walk_back.extend((shop_back1, shop_back2, shop_back3, shop_back4))
+                    if facing == "left":
+                        playerImg = walk_left[0]
+                    if facing == "right":
+                        playerImg = walk_right[0]
+                    if facing == "down":
+                        playerImg = walk_front[0]
+                    if facing == "up":
+                        playerImg = walk_back[0]
+                    outfit = 2
+                elif outfit == 3:
+                    walk_left.clear()
+                    walk_left.extend((cow_left1, cow_left2, cow_left3, cow_left4))
+                    walk_right.clear()
+                    walk_right.extend((cow_right1, cow_right2, cow_right3, cow_right4))
+                    walk_front.clear()
+                    walk_front.extend((cow_front1, cow_front2, cow_front3, cow_front4))
+                    walk_back.clear()
+                    walk_back.extend((cow_back1, cow_back2, cow_back3, cow_back4))
                     if facing == "left":
                         playerImg = walk_left[0]
                     if facing == "right":
@@ -676,7 +743,8 @@ while running:
 
                 if not propat(playerX-1, playerY) \
                 and ((playerX >= 2) or (playerX == 1 and playerY == 4)):
-                    playerX += -1
+                    left_animation = True
+                    animating = True
 
             if event.key == pygame.K_RIGHT:
                 playerImg = walk_right[0]
@@ -684,20 +752,23 @@ while running:
 
                 if not propat(playerX+1, playerY) \
                 and (playerX != 6 and (playerX != 0 or (playerX == 0 and playerY == 4))):
-                    playerX += 1
+                    right_animation = True
+                    animating = True
 
             if event.key == pygame.K_DOWN:
                 playerImg = walk_front[0]
                 facing = "down"
                 if not propat(playerX, playerY+1) \
                 and ((playerY != 5 and playerX > 0) or (playerY != 6 and playerX == 0)):
-                    playerY += 1
+                    down_animation = True
+                    animating = True
 
             if event.key == pygame.K_UP:
                 playerImg = walk_back[0]
                 facing = "up"
                 if not propat(playerX, playerY-1) and playerY != 0:
-                    playerY += -1
+                    up_animation = True
+                    animating = True
 
 # interact with mousey
             if event.key == pygame.K_RETURN:
@@ -713,8 +784,9 @@ while running:
                 if event.key == pygame.K_RETURN:
                     if facing == "up" and target.X == playerX and target.Y == playerY - 1:
                         if target.key == 2:
-                            print("you looked inside")
+                            print("you emptied the chest")
                             P14.on = True
+                            target.move = True
                         if target.key == 0:
                             print("the chest is locked")
                             P16.on = True
@@ -860,15 +932,15 @@ while running:
 # mouse animations
     if mouse_ticking == True:
         mouse_tick += 1
-        if mouse_tick == 5:
+        if mouse_tick == 100:
             mousey.rectangle = (0, 0, 19, 30)
-        if mouse_tick == 10:
+        if mouse_tick == 200:
             mousey.rectangle = (19, 0, 19, 30)
-        if mouse_tick == 15:
+        if mouse_tick == 300:
             mousey.rectangle = (38, 0, 19, 30)
-        if mouse_tick == 20:
+        if mouse_tick == 400:
             mousey.rectangle = (57, 0, 19, 30)
-            mouse_tick = 1
+            mouse_tick = 0
 
     # switch between in room and crawlspace
     if playerX == 0 and playerY == 4:
@@ -999,7 +1071,6 @@ while running:
 
                     # inventory
                     if event.key == pygame.K_RETURN and select.Y == M1.Y:
-                        print("you have no items!")
                         P10.on = True
                         for m in current_inv:
                             if m.page == 1:
@@ -1024,7 +1095,12 @@ while running:
                     # outfit
                     elif event.key == pygame.K_RETURN and select.Y == M3.Y:
                         print("You're already wearing clothes!")
-                        P12.on = True
+                        for m in menu_items:
+                            m.on = False
+                        in_menu = False
+                        in_outfits = True
+                        outfits[outfit_select].on = True
+                        pause = False
 
                     # scraps
                     elif event.key == pygame.K_RETURN and select.Y == M4.Y:
@@ -1080,6 +1156,87 @@ while running:
                         list_select -= 1
                         (texts[list_select]).on = True
                         (textsb[list_select]).on = True
+
+                if in_outfits == True:
+                    if event.key == pygame.K_RIGHT:
+                        if outfit_select != len(outfits)-1:
+                            outfits[outfit_select].on = False
+                            outfit_select += 1
+                            outfits[outfit_select].on = True
+                        elif outfit_select == len(outfits)-1:
+                            outfits[outfit_select].on = False
+                            outfit_select = 0
+                            outfits[outfit_select].on = True
+                    if event.key == pygame.K_LEFT:
+                        if outfit_select == 0:
+                            outfits[outfit_select].on = False
+                            outfit_select = len(outfits)-1
+                            outfits[outfit_select].on = True
+                        elif outfit_select != 0:
+                            outfits[outfit_select].on = False
+                            outfit_select -= 1
+                            outfits[outfit_select].on = True
+                    if event.key == pygame.K_RETURN:
+                        if pause == True:
+                            if outfits[outfit_select] == outfit_cow:
+                                walk_left.clear()
+                                walk_left.extend((cow_left1, cow_left2, cow_left3, cow_left4))
+                                walk_right.clear()
+                                walk_right.extend((cow_right1, cow_right2, cow_right3, cow_right4))
+                                walk_front.clear()
+                                walk_front.extend((cow_front1, cow_front2, cow_front3, cow_front4))
+                                walk_back.clear()
+                                walk_back.extend((cow_back1, cow_back2, cow_back3, cow_back4))
+                                if facing == "left":
+                                    playerImg = walk_left[0]
+                                if facing == "right":
+                                    playerImg = walk_right[0]
+                                if facing == "down":
+                                    playerImg = walk_front[0]
+                                if facing == "up":
+                                    playerImg = walk_back[0]
+                            elif outfits[outfit_select] == outfit_suit:
+                                walk_left.clear()
+                                walk_left.extend((suit_left1, suit_left2, suit_left3, suit_left4))
+                                walk_right.clear()
+                                walk_right.extend((suit_right1, suit_right2, suit_right3, suit_right4))
+                                walk_front.clear()
+                                walk_front.extend((suit_front1, suit_front2, suit_front3, suit_front4))
+                                walk_back.clear()
+                                walk_back.extend((suit_back1, suit_back2, suit_back3, suit_back4))
+                                if facing == "left":
+                                    playerImg = walk_left[0]
+                                if facing == "right":
+                                    playerImg = walk_right[0]
+                                if facing == "down":
+                                    playerImg = walk_front[0]
+                                if facing == "up":
+                                    playerImg = walk_back[0]
+
+                            elif outfits[outfit_select] == outfit_shop:
+                                walk_left.clear()
+                                walk_left.extend((shop_left1, shop_left2, shop_left3, shop_left4))
+                                walk_right.clear()
+                                walk_right.extend((shop_right1, shop_right2, shop_right3, shop_right4))
+                                walk_front.clear()
+                                walk_front.extend((shop_front1, shop_front2, shop_front3, shop_front4))
+                                walk_back.clear()
+                                walk_back.extend((shop_back1, shop_back2, shop_back3, shop_back4))
+                                if facing == "left":
+                                    playerImg = walk_left[0]
+                                if facing == "right":
+                                    playerImg = walk_right[0]
+                                if facing == "down":
+                                    playerImg = walk_front[0]
+                                if facing == "up":
+                                    playerImg = walk_back[0]
+                            P12.on = True
+                            clear_menu()
+
+
+
+
+
 # in inventory
                 if in_inv == True:
                     menu_number = 4
@@ -1406,6 +1563,7 @@ while running:
         pygame.display.update()
         clock.tick(FPS)
 
+    print(len(outfits) - 1)
     pygame.display.update()
 
     clock.tick(FPS)
