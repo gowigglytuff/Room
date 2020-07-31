@@ -412,7 +412,7 @@ outfit_cow = Prop((0, 0, 37, 36),  'sprites/outfit_cow.png', 110/32, 36/16, Fals
 outfit_suit = Prop((0, 0, 37, 36),  'sprites/outfit_suit.png', 110/32, 36/16, False, 0, False)
 outfit_bunny = Prop((0, 0, 37, 36),  'sprites/outfit_bunny.png', 110/32, 36/16, False, 0, False)
 
-outfits = [outfit_shop, outfit_cow, outfit_suit]
+outfits = [outfit_shop, outfit_cow, outfit_suit, outfit_bunny]
 
 mousey = Prop((0, 0, 19, 30), "sprites/mouse.png", 4, 0, False, 100, False)
 
@@ -541,6 +541,12 @@ def clear_menu():
         r.on = False
     in_outfits = False
     for x in outfits:
+        x.on = False
+    T1a.on = False
+    T1b.on = False
+    in_phone = False
+    phone_bg.on = False
+    for x in phone_opt:
         x.on = False
 
 music_start = 0
@@ -829,7 +835,7 @@ while running:
                         target.X += 1
 
                     if facing == "down" and playerX == target.X and playerY+1 == target.Y \
-                    and not propat(playerX, playerY+2) and target.Y < 5:
+                    and not propat(playerX, playerY+2) and target.Y < 5 and target.move == True:
                         target.Y += 1
 
                     if facing == "up" and playerX == target.X and playerY-1 == target.Y \
@@ -1129,8 +1135,10 @@ while running:
                         for m in menu_items:
                             m.on = True
                         clear_texts()
+                        for x in phone_opt:
+                            x.on = False
 
-                    if in_messages = True:
+                    if in_messages == True:
                         if event.key == pygame.K_UP:
                             T1a.on = True
                             T1b.on = True
