@@ -19,6 +19,8 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 green = (3, 87, 43)
 
+list_select = 0
+
 suit_left = 'sprites/suit_left.png'
 suit_right = 'sprites/suit_right.png'
 suit_front = 'sprites/suit_front.png'
@@ -224,8 +226,20 @@ P20 = Phrase("It's very sharp!", False, 10, 116, white, 10)
 P21 = Phrase("Aw, it's cute!", False, 10, 116, white, 10)
 
 P22 = Phrase("it's empty!", False, 10, 116, white, 10)
+P23 = Phrase("There's no signal!", False, 10, 116, white, 10)
 
-phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22]
+P24 = Phrase("Bobble", False, 10, 116, white, 10)
+P25 = Phrase("Dolly", False, 10, 116, white, 10)
+P26 = Phrase("Toy", False, 10, 116, white, 10)
+P27 = Phrase("You're missing 2 parts", False, 10, 116, white, 10)
+P28 = Phrase("You're missing a part", False, 10, 116, white, 10)
+P29 = Phrase("You assembled the machine", False, 10, 116, white, 10)
+P30 = Phrase("duster", False, 10, 116, white, 10)
+P31 = Phrase("snack", False, 10, 116, white, 10)
+P32 = Phrase("kettle", False, 10, 116, white, 10)
+
+phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23,
+           P24, P25, P26, P27, P28, P29, P30, P31, P32]
 
 
 
@@ -281,9 +295,14 @@ T1b = Phrase("are going okay.", False, menuX + 16, menuY + 55, green, 8)
 T2b = Phrase(" ", False, menuX + 16, menuY + 55, green, 8)
 T3b = Phrase("any help with anything!", False, menuX + 16, menuY + 55, green, 8)
 
+total_texts = (3-1)
+text_count = Phrase(str(list_select + 1) + "/" + str(total_texts), True, menuX + 16, menuY + 55, green, 8)
+
 texts = [T1a, T2a, T3a]
 textsb = [T1b, T2b, T3b]
-total_texts = (3-1)
+
+
+
 
 SM1 = Phrase("use", False, menuX + 76, menuY + 10, black, 8)
 SM2 = Phrase("tap", False, menuX + 76, menuY + 22, black, 7)
@@ -474,7 +493,6 @@ in_menu = False
 in_inv = False
 in_scrap = False
 in_phone = False
-list_select = 0
 select4 = 0
 in_record_menu = False
 in_submenu = False
@@ -511,7 +529,7 @@ def clear_texts():
         t.on = False
 
 def clear_menu():
-    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page, in_record_menu, in_outfits
+    global in_menu, in_inv, in_scrap, menu_go, in_phone, in_submenu, inv_page, in_record_menu, in_outfits, in_messages
     scrap.on = False
     in_menu = False
     in_inv = False
@@ -548,6 +566,8 @@ def clear_menu():
     phone_bg.on = False
     for x in phone_opt:
         x.on = False
+    in_messages = False
+
 
 music_start = 0
 
@@ -670,7 +690,7 @@ def menu_draw():
         for r in rambling:
             if r.on == True:
                 r.write()
-    if in_phone == True:
+    if in_messages == True:
         for r in texts:
             if r.on == True:
                 r.write()
@@ -693,6 +713,9 @@ def menu_draw():
     for x in phone_opt:
         if x.on == True:
             x.write()
+
+    if text_count.on == True:
+        text_count.write()
 
 
 while running:
@@ -1082,6 +1105,7 @@ while running:
                         in_menu = False
                         for x in phone_opt:
                             x.on = True
+                        pause = False
 
                     # outfit
                     elif event.key == pygame.K_RETURN and select.Y == M3.Y:
@@ -1127,7 +1151,7 @@ while running:
                         (rambling[list_select]).on = True
 # in phone
                 if in_phone == True:
-                    if event.key == pygame.K_DOWN:
+                    if event.key == pygame.KMOD_CTRL:
                         in_phone = False
                         phone_bg.on = False
                         in_menu = True
@@ -1138,21 +1162,58 @@ while running:
                         for x in phone_opt:
                             x.on = False
 
-                    if in_messages == True:
-                        if event.key == pygame.K_UP:
-                            T1a.on = True
-                            T1b.on = True
-                        if event.key == pygame.K_RIGHT and list_select < total_texts:
-                            clear_texts()
-                            list_select += 1
+                    if event.key == pygame.K_DOWN:
+                        if phone_select.Y == J1.Y:
+                            phone_select.Y = J2.Y
+                        elif phone_select.Y == J2.Y:
+                            phone_select.Y = J1.Y
+
+                    if event.key == pygame.K_UP:
+                        if phone_select.Y == J1.Y:
+                            phone_select.Y = J2.Y
+                        elif phone_select.Y == J2.Y:
+                            phone_select.Y = J1.Y
+
+                    if event.key == pygame.K_RETURN and pause == True:
+                        if phone_select.Y == J1.Y:
+                            in_phone = False
+                            for x in phone_opt:
+                                x.on = False
+                            in_messages = True
                             (texts[list_select]).on = True
                             (textsb[list_select]).on = True
 
-                        if event.key == pygame.K_LEFT and list_select > 0:
+                        elif phone_select.Y == J2.Y:
+                            list_select = 0
                             clear_texts()
-                            list_select -= 1
-                            (texts[list_select]).on = True
-                            (textsb[list_select]).on = True
+                            P23.on = True
+                            clear_menu()
+
+
+
+                if in_messages == True:
+                    if event.key == pygame.K_RIGHT and list_select < total_texts:
+                        clear_texts()
+                        list_select += 1
+                        (texts[list_select]).on = True
+                        (textsb[list_select]).on = True
+
+                    if event.key == pygame.K_LEFT and list_select > 0:
+                        clear_texts()
+                        list_select -= 1
+                        (texts[list_select]).on = True
+                        (textsb[list_select]).on = True
+
+                    if event.key == pygame.KMOD_CTRL:
+                        in_phone = False
+                        phone_bg.on = False
+                        in_menu = True
+                        list_select = 0
+
+                        clear_texts()
+                        clear_menu()
+
+
 
                 if in_outfits == True:
                     if event.key == pygame.K_RIGHT:
@@ -1393,17 +1454,42 @@ while running:
 # submenu "tap" button
                         if subselect.Y == SM2.Y:
                             if inv_page == 1:
+                                # keys
                                 if select.Y == MIY1 or MIY2 or MIY3 or MIY4:
                                     P19.on = True
                                     print("I wonder if the colour means anything...")
                             if inv_page == 2:
+                                # knife
                                 if select.Y == MIY1:
                                     print("It's very sharp!")
                                     P20.on = True
+                                # bobble
+                                if select.Y == MIY2:
+                                    P24.on = True
+                                # dolly
+                                if select.Y == MIY3:
+                                    P25.on = True
+                                # toy
+                                if select.Y == MIY4:
+                                    P26.on = True
+                            if inv_page == 3:
+                                # machine
+                                if select.Y == MIY1:
+                                    P27.on = True
+                                # duster
+                                if select.Y == MIY2:
+                                    P30.on = True
+                                # snack
+                                if select.Y == MIY3:
+                                    P31.on = True
+                                # kettle
+                                if select.Y == MIY4:
+                                    P32.on = True
 
 # submenu "use" button
                         if subselect.Y == SM1.Y:
-                            if inv_page == 1:
+                            if inv_page == 1
+                                # red keys
                                 if select.Y == MIY1:
                                     if facing == "up" and red_chest.X == playerX and red_chest.Y == playerY - 1:
                                         print("the chest opened!")
@@ -1417,6 +1503,7 @@ while running:
                                         in_submenu = False
                                         select.on = True
                                         subselect.on = False
+                                # yellow key
                                 elif select.Y == MIY2:
                                     if facing == "up" and yellow_chest.X == playerX and yellow_chest.Y == playerY - 1:
                                         P1.on = True
@@ -1430,6 +1517,7 @@ while running:
                                         in_submenu = False
                                         select.on = True
                                         subselect.on = False
+                                # Blue key
                                 elif select.Y == MIY3:
                                     if facing == "up" and blue_chest.X == playerX and blue_chest.Y == playerY - 1:
                                         P1.on = True
@@ -1443,6 +1531,7 @@ while running:
                                         in_submenu = False
                                         select.on = True
                                         subselect.on = False
+                                # green key
                                 elif select.Y == MIY4:
                                     if facing == "up" and green_chest.X == playerX and green_chest.Y == playerY - 1:
                                         P1.on = True
@@ -1457,6 +1546,7 @@ while running:
                                         select.on = True
                                         subselect.on = False
                             if inv_page == 2:
+                                # knife
                                 if select.Y == MIY1:
                                     for target in props:
                                         if ((facing == "up" and target.X == playerX and target.Y == playerY - 1)
