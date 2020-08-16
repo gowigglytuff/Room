@@ -228,18 +228,28 @@ P21 = Phrase("Aw, it's cute!", False, 10, 116, white, 10)
 P22 = Phrase("it's empty!", False, 10, 116, white, 10)
 P23 = Phrase("There's no signal!", False, 10, 116, white, 10)
 
-P24 = Phrase("Bobble", False, 10, 116, white, 10)
-P25 = Phrase("Dolly", False, 10, 116, white, 10)
-P26 = Phrase("Toy", False, 10, 116, white, 10)
-P27 = Phrase("You're missing 2 parts", False, 10, 116, white, 10)
-P28 = Phrase("You're missing a part", False, 10, 116, white, 10)
-P29 = Phrase("You assembled the machine", False, 10, 116, white, 10)
-P30 = Phrase("duster", False, 10, 116, white, 10)
-P31 = Phrase("snack", False, 10, 116, white, 10)
-P32 = Phrase("kettle", False, 10, 116, white, 10)
+P24 = Phrase("I can't think of a use...", False, 10, 116, white, 10)  # bobble
+P25 = Phrase("I can't think of a use...", False, 10, 116, white, 10)  # dolly
+P26 = Phrase("I can't think of a use...", False, 10, 116, white, 10)  # toy
+P27 = Phrase("You're missing 2 parts", False, 10, 116, white, 10)  # machineX1
+P28 = Phrase("You're missing a part", False, 10, 116, white, 10)  # machineX2
+P29 = Phrase("You assembled the machine", False, 10, 116, white, 10)  # machineX3
+P30 = Phrase("Is there dust around?", False, 10, 116, white, 10)  # duster
+P31 = Phrase("Crumbs got everywhere!", False, 10, 116, white, 10)  # snack
+P32 = Phrase("I can't think of a use...", False, 10, 116, white, 10)  # Kettle
+
+P33 = Phrase("We might still need that...", False, 10, 116, white, 10)  # can't donate an item
+P34 = Phrase("Hope someone can use this...", False, 10, 116, white, 10)  # make a donation
+
+P35 = Phrase("You found a scrap!", False, 10, 116, white, 10)  # find a scrap
+
+P36 = Phrase("You got a text!", False, 10, 116, white, 10)  # get a text
+P37 = Phrase("You sent a text!", False, 10, 116, white, 10)  # send a text
+
+P38 = Phrase("Crumbs got everywhere...", False, 10, 116, white, 10)  # use snack
 
 phrases = [P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23,
-           P24, P25, P26, P27, P28, P29, P30, P31, P32]
+           P24, P25, P26, P27, P28, P29, P30, P31, P32, P33, P34, P35, P36, P37, P38]
 
 
 
@@ -1488,7 +1498,7 @@ while running:
 
 # submenu "use" button
                         if subselect.Y == SM1.Y:
-                            if inv_page == 1
+                            if inv_page == 1:
                                 # red keys
                                 if select.Y == MIY1:
                                     if facing == "up" and red_chest.X == playerX and red_chest.Y == playerY - 1:
